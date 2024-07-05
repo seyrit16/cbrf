@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.NonNull;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,20 +18,22 @@ public class BICDirectoryEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "BIC", nullable = false)
-    private Integer BIC;
+    @NonNull
+    @Column(name = "bic")
+    private Integer bic;
 
+    @NonNull
     @ManyToOne
-    @JoinColumn(name = "participant_info_id", nullable = false)
+    @JoinColumn(name = "participant_info_id")
     private ParticipantInfo participantInfo;
 
     @ManyToMany
     @JoinTable(
             name = "bicDirectoryEntry_accounts",
             joinColumns = @JoinColumn(name = "bic_directory_entry_id"),
-            inverseJoinColumns = @JoinColumn(name = "Accounts_id")
+            inverseJoinColumns = @JoinColumn(name = "accounts_id")
     )
-    private Set<Accounts> accountsSet;
+    private List<Accounts> accountsList;
 
     @ManyToMany
     @JoinTable(
@@ -38,5 +41,5 @@ public class BICDirectoryEntry {
             joinColumns = @JoinColumn(name = "bic_directory_entry_id"),
             inverseJoinColumns = @JoinColumn(name = "swbics_id")
     )
-    private Set<SWBICS> swbicsSet;
+    private List<SWBICS> swbicsList;
 }
