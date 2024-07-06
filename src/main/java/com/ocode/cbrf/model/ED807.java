@@ -34,6 +34,9 @@ public class ED807 {
     @Column(name="author")
     private Long author;
 
+    @Column(name = "receiver")
+    private Long receiver;
+
     @NonNull
     @Column(name = "creation_reason")
     private String creationReason;
