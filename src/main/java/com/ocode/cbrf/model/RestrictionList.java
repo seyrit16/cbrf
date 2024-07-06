@@ -29,6 +29,6 @@ public class RestrictionList {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    @ManyToMany(mappedBy = "restrictionList")
+    @ManyToMany(mappedBy = "restrictionLists")
     private List<ParticipantInfo> participantInfos;
 }
