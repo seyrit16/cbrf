@@ -25,6 +25,6 @@ public class SWBICS {
     @Column(name = "default_swbic")
     private boolean defaultSWBIC;
 
-    @ManyToMany(mappedBy = "swbics")
+    @ManyToMany(mappedBy = "swbicsList")
     private List<BICDirectoryEntry> bicDirectoryEntries;
 }
