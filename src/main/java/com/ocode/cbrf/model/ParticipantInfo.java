@@ -24,6 +24,9 @@ public class ParticipantInfo {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "english_name")
+    private String englishName;
+
     @Column(name = "reg_number")
     private Integer regNumber;
 
@@ -46,10 +49,17 @@ public class ParticipantInfo {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "parent_name")
+    private Integer parentName;
+
     @NonNull
     @Column(name = "date_in")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateIn;
+
+    @Column(name = "date_out")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate dateOut;
 
     @NonNull
     @Column(name = "participant_type")
