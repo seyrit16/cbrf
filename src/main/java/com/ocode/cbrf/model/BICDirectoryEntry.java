@@ -22,6 +22,9 @@ public class BICDirectoryEntry {
     @Column(name = "bic")
     private Integer bic;
 
+    @Column(name = "change_type")
+    private String changeType;
+
     @NonNull
     @ManyToOne
     @JoinColumn(name = "participant_info_id")
