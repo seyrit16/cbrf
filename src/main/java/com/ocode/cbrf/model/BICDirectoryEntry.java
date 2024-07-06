@@ -36,7 +36,7 @@ public class BICDirectoryEntry {
             joinColumns = @JoinColumn(name = "bic_directory_entry_id"),
             inverseJoinColumns = @JoinColumn(name = "accounts_id")
     )
-    private List<Accounts> accountsList;
+    private List<Accounts> accounts;
 
     @ManyToMany
     @JoinTable(
