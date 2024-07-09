@@ -49,8 +49,8 @@ public class ParticipantInfo {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "parent_name")
-    private Integer parentName;
+    @Column(name = "parent_bic")
+    private Integer parentBIC;
 
     @NonNull
     @Column(name = "date_in")
