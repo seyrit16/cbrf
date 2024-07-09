@@ -7,20 +7,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ED807Repository extends JpaRepository<ED807, Long> {
     @Query(value = "select * from ed807", nativeQuery = true)
     List<ED807> findAll();
 
-    @Query(value = "select * from ed807 as ed where ed.number = :number", nativeQuery = true)
-    ED807 findByNumber(@Param("number") Integer number);
+    @Query(value = "select * from ed807 as ed where ed.number = :number limit 1", nativeQuery = true)
+    Optional<ED807> findByNumber(@Param("number") Integer number);
 
     @Query(value = "select * from ed807 as ed where ed.date between :startDate and :endDate", nativeQuery = true)
-    List<ED807> findAllBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    List<ED807> findAllBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     @Query(value = "select * from ed807 as ed where ed.author = :author", nativeQuery = true)
     List<ED807> findAllByAuthor(@Param("author") Long author);
