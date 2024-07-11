@@ -1,10 +1,10 @@
 package com.ocode.cbrf.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ public class ED807 {
 
     @NonNull
     @Column(name = "date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @NonNull
@@ -43,7 +43,7 @@ public class ED807 {
 
     @NonNull
     @Column(name = "creation_date_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssX")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "YYYY-MM-DD'T'hh:mm:ssZ")
     private OffsetDateTime creationDateTime;
 
     @NonNull
@@ -51,7 +51,7 @@ public class ED807 {
     private String infoTypeCode;
 
     @Column(name = "business_day")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     private LocalDate businessDay;
 
     @Column(name = "directory_version")
