@@ -1,4 +1,4 @@
-package com.ocode.cbrf.service.impl;
+package com.ocode.cbrf.service;
 
 import com.ocode.cbrf.model.BICDirectoryEntry;
 

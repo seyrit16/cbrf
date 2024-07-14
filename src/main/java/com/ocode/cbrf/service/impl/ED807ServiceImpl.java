@@ -1,8 +1,8 @@
-package com.ocode.cbrf.service.impl.impl;
+package com.ocode.cbrf.service.impl;
 
 import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.repository.ED807Repository;
-import com.ocode.cbrf.service.impl.ED807Service;
+import com.ocode.cbrf.service.ED807Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
