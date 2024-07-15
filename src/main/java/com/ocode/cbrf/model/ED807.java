@@ -50,6 +50,7 @@ public class ED807 {
     @Column(name = "info_type_code")
     private String infoTypeCode;
 
+    @NonNull
     @Column(name = "business_day")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     private LocalDate businessDay;
