@@ -23,7 +23,7 @@ public class SWBICS {
     private String swbic;
 
     @Column(name = "default_swbic")
-    private boolean defaultSWBIC; // может Boolean лучше?
+    private Boolean defaultSWBIC;
 
     @ManyToMany(mappedBy = "swbicsList")
     private List<BICDirectoryEntry> bicDirectoryEntries;
