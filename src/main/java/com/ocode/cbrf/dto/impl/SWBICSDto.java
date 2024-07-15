@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @Getter
@@ -13,13 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SWBICSDto implements Dto {
-
+    @XmlTransient
     private Long id;
 
-
+    @XmlAttribute(name = "SWBIC")
     private String swbic;
 
-
+    @XmlAttribute(name = "DefaultSWBIC")
     private Boolean defaultSWBIC;
 
 
