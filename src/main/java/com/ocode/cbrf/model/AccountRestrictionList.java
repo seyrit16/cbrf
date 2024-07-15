@@ -22,7 +22,16 @@ public class AccountRestrictionList {
     @Column(name = "account_restriction")
     private String accountRestriction;
 
-    @Temporal(TemporalType.DATE)
+    /*
+    * Since Hibernate 5 you don’t need and should not use @Temporal in new code.
+    * It was for annotating Date and Calendar fields, but those classes are poorly
+    * designed and long outdated Instead use classes from java.time, the modern
+    * Java date and time API.
+    */
+
+    // кстати а почему он ни к кому не присоединяется? >_<
+
+    @Temporal(TemporalType.DATE) //?
     @Column(name = "date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     private LocalDate date;

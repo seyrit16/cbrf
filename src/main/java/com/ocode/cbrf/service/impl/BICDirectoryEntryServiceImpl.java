@@ -1,8 +1,8 @@
-package com.ocode.cbrf.service.impl.impl;
+package com.ocode.cbrf.service.impl;
 
 import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.repository.BICDirectoryEntryRepository;
-import com.ocode.cbrf.service.impl.BICDirectoryEntryService;
+import com.ocode.cbrf.service.BICDirectoryEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

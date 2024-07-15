@@ -1,8 +1,8 @@
-package com.ocode.cbrf.service.impl.impl;
+package com.ocode.cbrf.service.impl;
 
 import com.ocode.cbrf.config.XmlStorageProperties;
 import com.ocode.cbrf.dto.impl.ED807Dto;
-import com.ocode.cbrf.service.impl.XmlFileService;
+import com.ocode.cbrf.service.XmlFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
