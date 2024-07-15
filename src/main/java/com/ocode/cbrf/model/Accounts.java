@@ -49,4 +49,12 @@ public class Accounts {
 
     @ManyToMany(mappedBy = "accounts")
     private List<BICDirectoryEntry> bicDirectoryEntries;
+
+    @ManyToMany
+    @JoinTable(
+            name = "accounts_accountRestrictionList",
+            joinColumns = @JoinColumn(name = "accounts"),
+            inverseJoinColumns =  @JoinColumn(name = "account_restriction_list")
+    )
+    private List<AccountRestrictionList> accountRestrictionLists;
 }
