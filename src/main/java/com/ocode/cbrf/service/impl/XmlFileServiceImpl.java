@@ -3,11 +3,11 @@ package com.ocode.cbrf.service.impl;
 import com.ocode.cbrf.config.XmlStorageProperties;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.service.XmlFileService;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -21,6 +21,10 @@ public class XmlFileServiceImpl implements XmlFileService {
     @Autowired
     public XmlFileServiceImpl(XmlStorageProperties properties){
         this.storagePath = properties.getPath();
+    }
+
+    public String getStoragePath() {
+        return storagePath;
     }
 
     @Override
@@ -38,9 +42,9 @@ public class XmlFileServiceImpl implements XmlFileService {
     }
 
     @Override
-    public ED807Dto unmarshalXml(String path) throws JAXBException, IOException {
+    public ED807Dto unmarshalXml(String fileName) throws JAXBException, IOException {
         JAXBContext context = JAXBContext.newInstance(ED807Dto.class);
         return (ED807Dto) context.createUnmarshaller()
-                .unmarshal(new FileReader(path));
+                .unmarshal(new FileReader(storagePath + "/" + fileName));
     }
 }
