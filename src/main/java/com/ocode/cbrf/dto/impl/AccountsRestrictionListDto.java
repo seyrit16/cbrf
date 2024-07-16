@@ -2,6 +2,7 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.model.Accounts;
+import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +10,8 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Positive;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AccountsRestrictionListDto {
     @Positive
     @XmlTransient
@@ -36,5 +36,5 @@ public class AccountsRestrictionListDto {
     @XmlAttribute(name = "SuccessorBIC")
     private Integer successorBIC;
 
-    private List<Accounts> accountsList;
+    private List<AccountsDto> accountsList;
 }
