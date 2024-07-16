@@ -1,12 +1,12 @@
 package com.ocode.cbrf.adapter;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.text.DateFormat;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class OffsetDateTimeAdapter extends XmlAdapter<String, OffsetDateTime> {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ssZ");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     @Override
     public OffsetDateTime unmarshal(String s) throws Exception {
