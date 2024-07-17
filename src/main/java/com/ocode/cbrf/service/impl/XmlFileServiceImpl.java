@@ -5,13 +5,11 @@ import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.service.XmlFileService;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 
 @Service
@@ -44,7 +42,10 @@ public class XmlFileServiceImpl implements XmlFileService {
     @Override
     public ED807Dto unmarshalXml(String fileName) throws JAXBException, IOException {
         JAXBContext context = JAXBContext.newInstance(ED807Dto.class);
-        return (ED807Dto) context.createUnmarshaller()
-                .unmarshal(new FileReader(storagePath + "/" + fileName));
+        Unmarshaller unmarshaller= context.createUnmarshaller();
+        try(InputStreamReader reader = new InputStreamReader(new FileInputStream(storagePath +"/"+fileName),
+                "Windows-1251")) {
+            return (ED807Dto) unmarshaller.unmarshal(reader);
+        }
     }
 }
