@@ -28,7 +28,7 @@ public class ParticipantInfo {
     private String englishName;
 
     @Column(name = "reg_number")
-    private Integer regNumber;
+    private String regNumber;
 
     @Column(name = "country code")
     private String countryCode;
