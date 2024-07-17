@@ -2,10 +2,7 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.dto.Dto;
 import jakarta.xml.bind.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -29,12 +26,12 @@ public class BICDirectoryEntryDto implements Dto {
     private String changeType;
 
     @NotNull
-    @XmlElement(name = "ParticipantInfo")
+    @XmlElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")
     private ParticipantInfoDto participantInfo;
 
-    @XmlElement(name = "Accounts")
+    @XmlElement(name = "Accounts", namespace = "urn:cbr-ru:ed:v2.0")
     private List<AccountsDto> accounts;
 
-    @XmlElement(name = "SWBICS")
+    @XmlElement(name = "SWBICS", namespace = "urn:cbr-ru:ed:v2.0")
     private List<SWBICSDto> swbicsList;
 }

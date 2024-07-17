@@ -66,6 +66,6 @@ public class ED807Dto implements Dto {
     @XmlAttribute(name = "DirectoryVersion")
     private Integer directoryVersion;
 
-    @XmlElement(name = "BICDirectoryEntry")
+    @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
     private List<BICDirectoryEntryDto> bicDirectoryEntries;
 }

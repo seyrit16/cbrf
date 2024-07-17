@@ -4,10 +4,7 @@ import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.dto.Dto;
 import com.ocode.cbrf.model.AccountRestrictionList;
 import jakarta.xml.bind.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -58,6 +55,6 @@ public class AccountsDto implements Dto {
 
     private List<BICDirectoryEntryDto> bicDirectoryEntries;
 
-    @XmlElement(name = "AccRstrList")
+    @XmlElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
     private List<AccountsRestrictionListDto> accountRestrictionLists;
 }

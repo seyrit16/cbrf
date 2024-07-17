@@ -3,10 +3,7 @@ package com.ocode.cbrf.dto.impl;
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.dto.Dto;
 import jakarta.xml.bind.annotation.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -18,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,7 +32,7 @@ public class ParticipantInfoDto implements Dto {
     private String englishName;
 
     @XmlAttribute(name = "RegN")
-    private Integer regNumber;
+    private String regNumber;
 
     @XmlAttribute(name = "CntrCd")
     private String countryCode;
@@ -88,7 +86,7 @@ public class ParticipantInfoDto implements Dto {
     @XmlAttribute(name = "ParticipantStatus")
     private String participantStatus;
 
-    @XmlElement(name = "RstrList")
+    @XmlElement(name = "RstrList", namespace = "urn:cbr-ru:ed:v2.0")
     private List<RestrictionListDto> restrictionLists;
 
     private List<BICDirectoryEntryDto> bicDirectoryEntries;
