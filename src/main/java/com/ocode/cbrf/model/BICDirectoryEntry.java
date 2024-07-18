@@ -1,6 +1,7 @@
 package com.ocode.cbrf.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,9 +12,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bic_directory_entry")
 public class BICDirectoryEntry {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,4 +49,7 @@ public class BICDirectoryEntry {
             inverseJoinColumns = @JoinColumn(name = "swbics_id")
     )
     private List<SWBICS> swbicsList;
+
+    @Column(name = "deleted")
+    private Boolean deleted;
 }
