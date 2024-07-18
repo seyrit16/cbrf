@@ -22,8 +22,11 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     @Override
     public void delete(Long id) {
         Optional<BICDirectoryEntry> optionalBICDirectoryEntry = bicDirectoryEntryRepository.findById(id);
-        if(optionalBICDirectoryEntry.isPresent())
-            bicDirectoryEntryRepository.delete(optionalBICDirectoryEntry.get());
+        BICDirectoryEntry bicDirectoryEntry = optionalBICDirectoryEntry.orElse(null);
+        if(bicDirectoryEntry != null) {
+            bicDirectoryEntry.setDeleted(true);
+            save(bicDirectoryEntry);
+        }
     }
 
     @Override
