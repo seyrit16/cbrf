@@ -23,9 +23,7 @@ public class ED807ServiceImpl implements ED807Service {
 
     @Override
     public void delete(Long id) {
-        Optional<ED807> optionalED807 = ed807Repository.findById(id);
-        if(optionalED807.isPresent())
-            ed807Repository.delete(optionalED807.get());
+
     }
 
     @Override
