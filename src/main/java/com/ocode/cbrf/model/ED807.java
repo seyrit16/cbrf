@@ -1,5 +1,6 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.springframework.lang.NonNull;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -67,4 +69,7 @@ public class ED807 {
             inverseJoinColumns = @JoinColumn(name = "bic_directory_entry_id")
     )
     private List<BICDirectoryEntry> bicDirectoryEntries;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "ed807s")
+    private Set<User> users;
 }
