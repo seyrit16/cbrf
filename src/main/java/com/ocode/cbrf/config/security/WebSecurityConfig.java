@@ -1,4 +1,4 @@
-package com.ocode.cbrf.config;
+package com.ocode.cbrf.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
