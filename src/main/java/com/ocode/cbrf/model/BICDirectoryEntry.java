@@ -34,6 +34,9 @@ public class BICDirectoryEntry {
     @JoinColumn(name = "participant_info_id")
     private ParticipantInfo participantInfo;
 
+    @ManyToMany(mappedBy = "bicDirectoryEntries")
+    private List<ED807> ed807List;
+
     @ManyToMany
     @JoinTable(
             name = "bicDirectoryEntry_accounts",
