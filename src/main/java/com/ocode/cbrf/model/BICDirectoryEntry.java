@@ -1,5 +1,6 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.invariants.ChangeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +27,9 @@ public class BICDirectoryEntry {
     @Column(name = "bic")
     private Integer bic;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "change_type")
-    private String changeType;
+    private ChangeType changeType;
 
     @NonNull
     @ManyToOne

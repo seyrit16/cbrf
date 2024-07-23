@@ -1,5 +1,6 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.invariants.Rstr;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,9 @@ public class RestrictionList {
     private Long id;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "restriction")
-    private String restriction;
+    private Rstr restriction;
 
     @NonNull
     @Column(name = "date")

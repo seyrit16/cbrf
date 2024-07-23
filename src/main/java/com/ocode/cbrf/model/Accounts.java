@@ -1,5 +1,6 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.invariants.RegulationAccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,8 +28,9 @@ public class Accounts {
     private String account;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "regulation_account_type")
-    private String regulationAccountType;
+    private RegulationAccountType regulationAccountType;
 
     @Column(name = "control_key")
     private String controlKey;
@@ -46,6 +48,7 @@ public class Accounts {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     private LocalDate dateOut;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_status")
     private String accountStatus;
 

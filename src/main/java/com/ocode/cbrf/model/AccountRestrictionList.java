@@ -1,6 +1,7 @@
 package com.ocode.cbrf.model;
 
 
+import com.ocode.cbrf.invariants.AccRstr;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +23,9 @@ public class AccountRestrictionList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "account_restriction")
-    private String accountRestriction;
+    private AccRstr accountRestriction;
 
     @Column(name = "date")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")

@@ -1,5 +1,7 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.invariants.CreationReason;
+import com.ocode.cbrf.invariants.InfoTypeCode;
 import com.ocode.cbrf.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,8 +44,9 @@ public class ED807 {
     private Long receiver;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "creation_reason")
-    private String creationReason;
+    private CreationReason creationReason;
 
     @NonNull
     @Column(name = "creation_date_time")
@@ -51,8 +54,9 @@ public class ED807 {
     private OffsetDateTime creationDateTime;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "info_type_code")
-    private String infoTypeCode;
+    private InfoTypeCode infoTypeCode;
 
     @NonNull
     @Column(name = "business_day")

@@ -1,5 +1,6 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.invariants.ParticipantStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -79,8 +80,9 @@ public class ParticipantInfo {
     @Column(name = "uid")
     private Long UId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "participant_status")
-    private String participantStatus;
+    private ParticipantStatus participantStatus;
 
     @ManyToMany
     @JoinTable(
