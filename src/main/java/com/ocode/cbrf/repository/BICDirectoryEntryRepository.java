@@ -16,4 +16,8 @@ public interface BICDirectoryEntryRepository extends JpaRepository<BICDirectoryE
 
     @Query(value = "select * from bic_directory_entry as bde where bde.bic = :bic limit 1",nativeQuery = true)
     Optional<BICDirectoryEntry> findByBic(@Param("bic") Integer bic);
+
+    @Query(value = "select bde.* from bic_directory_entry as bde inner join ed807_bic_directory_entry as ed_bde " +
+            "where ed_bde.ed807_id = :ed_id", nativeQuery = true)
+    List<BICDirectoryEntry> findBICDirectoryEntriesByEd807_ID(@Param("ed_id") Long edId);
 }

@@ -38,4 +38,11 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     public Optional<BICDirectoryEntry> getByBic(Integer bic) {
         return bicDirectoryEntryRepository.findByBic(bic);
     }
+
+    @Override
+    public List<BICDirectoryEntry> getBICDirectoryEntriesByEd807_ID(Long edId) {
+        List<BICDirectoryEntry> bicDirectoryEntries =
+                bicDirectoryEntryRepository.findBICDirectoryEntriesByEd807_ID(edId);
+        return bicDirectoryEntries;
+    }
 }

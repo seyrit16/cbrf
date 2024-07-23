@@ -10,4 +10,5 @@ public interface BICDirectoryEntryService {
     void delete(Long id);
     List<BICDirectoryEntry> getAll();
     Optional<BICDirectoryEntry> getByBic(Integer bic);
+    List<BICDirectoryEntry> getBICDirectoryEntriesByEd807_ID(Long edId);
 }
