@@ -89,6 +89,4 @@ public class ParticipantInfoDto implements Dto {
 
     @XmlElement(name = "RstrList", namespace = "urn:cbr-ru:ed:v2.0")
     private List<RestrictionListDto> restrictionLists;
-
-    private List<BICDirectoryEntryDto> bicDirectoryEntries;
 }

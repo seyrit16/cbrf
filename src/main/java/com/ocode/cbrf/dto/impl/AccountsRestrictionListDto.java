@@ -36,6 +36,4 @@ public class AccountsRestrictionListDto {
 
     @XmlAttribute(name = "SuccessorBIC")
     private Integer successorBIC;
-
-    private List<AccountsDto> accountsList;
 }

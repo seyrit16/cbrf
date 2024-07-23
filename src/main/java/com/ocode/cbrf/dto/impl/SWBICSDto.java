@@ -26,7 +26,4 @@ public class SWBICSDto implements Dto {
 
     @XmlAttribute(name = "DefaultSWBIC")
     private Boolean defaultSWBIC;
-
-
-    private List<BICDirectoryEntryDto> bicDirectoryEntries;
 }

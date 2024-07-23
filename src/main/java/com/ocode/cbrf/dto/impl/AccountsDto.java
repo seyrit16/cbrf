@@ -55,8 +55,6 @@ public class AccountsDto implements Dto {
     @XmlAttribute(name = "AccountStatus")
     private AccountStatus accountStatus;
 
-    private List<BICDirectoryEntryDto> bicDirectoryEntries;
-
     @XmlElement(name = "AccRstrList", namespace = "urn:cbr-ru:ed:v2.0")
     private List<AccountsRestrictionListDto> accountRestrictionLists;
 }

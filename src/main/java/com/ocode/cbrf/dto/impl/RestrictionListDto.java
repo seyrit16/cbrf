@@ -36,7 +36,4 @@ public class RestrictionListDto implements Dto {
     @XmlAttribute(name = "RstrDate")
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate date;
-
-
-    private List<ParticipantInfoDto> participantInfos;
 }
