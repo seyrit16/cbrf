@@ -2,6 +2,7 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.dto.Dto;
+import com.ocode.cbrf.invariants.ParticipantStatus;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -84,7 +85,7 @@ public class ParticipantInfoDto implements Dto {
     private Long UId;
 
     @XmlAttribute(name = "ParticipantStatus")
-    private String participantStatus;
+    private ParticipantStatus participantStatus;
 
     @XmlElement(name = "RstrList", namespace = "urn:cbr-ru:ed:v2.0")
     private List<RestrictionListDto> restrictionLists;

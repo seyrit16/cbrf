@@ -1,6 +1,8 @@
 package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.dto.Dto;
+import com.ocode.cbrf.invariants.ChangeType;
+import jakarta.persistence.Enumerated;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
 
@@ -23,7 +25,7 @@ public class BICDirectoryEntryDto implements Dto {
     private Integer bic;
 
     @XmlAttribute(name = "ChangeType")
-    private String changeType;
+    private ChangeType changeType;
 
     @NotNull
     @XmlElement(name = "ParticipantInfo", namespace = "urn:cbr-ru:ed:v2.0")

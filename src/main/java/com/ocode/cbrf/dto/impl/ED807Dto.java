@@ -3,6 +3,8 @@ package com.ocode.cbrf.dto.impl;
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.adapter.OffsetDateTimeAdapter;
 import com.ocode.cbrf.dto.Dto;
+import com.ocode.cbrf.invariants.CreationReason;
+import com.ocode.cbrf.invariants.InfoTypeCode;
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.*;
@@ -45,7 +47,7 @@ public class ED807Dto implements Dto {
 
     @NotNull
     @XmlAttribute(name = "CreationReason")
-    private String creationReason;
+    private CreationReason creationReason;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "YYYY-MM-DD'T'hh:mm:ssZ")
@@ -55,7 +57,7 @@ public class ED807Dto implements Dto {
 
     @NotNull
     @XmlAttribute(name = "InfoTypeCode")
-    private String infoTypeCode;
+    private InfoTypeCode infoTypeCode;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")

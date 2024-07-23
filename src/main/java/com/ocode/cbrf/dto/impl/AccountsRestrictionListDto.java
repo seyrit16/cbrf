@@ -1,6 +1,7 @@
 package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.adapter.LocalDateAdapter;
+import com.ocode.cbrf.invariants.AccRstr;
 import com.ocode.cbrf.model.Accounts;
 import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class AccountsRestrictionListDto {
     private Long id;
 
     @XmlAttribute(name = "AccRstr")
-    private String accountRestriction;
+    private AccRstr accountRestriction;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     @XmlAttribute(name = "AccRstrDate")

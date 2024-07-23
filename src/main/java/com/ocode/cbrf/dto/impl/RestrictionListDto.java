@@ -2,6 +2,7 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.dto.Dto;
+import com.ocode.cbrf.invariants.Rstr;
 import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class RestrictionListDto implements Dto {
 
     @NotNull
     @XmlAttribute(name = "Rstr")
-    private String restriction;
+    private Rstr restriction;
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")

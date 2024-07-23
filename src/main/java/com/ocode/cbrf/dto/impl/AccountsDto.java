@@ -2,6 +2,8 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.dto.Dto;
+import com.ocode.cbrf.invariants.AccountStatus;
+import com.ocode.cbrf.invariants.RegulationAccountType;
 import com.ocode.cbrf.model.AccountRestrictionList;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
@@ -30,7 +32,7 @@ public class AccountsDto implements Dto {
 
     @NotNull
     @XmlAttribute(name = "RegulationAccountType")
-    private String regulationAccountType;
+    private RegulationAccountType regulationAccountType;
 
     @XmlAttribute(name = "CK")
     private String controlKey;
@@ -51,7 +53,7 @@ public class AccountsDto implements Dto {
     private LocalDate dateOut;
 
     @XmlAttribute(name = "AccountStatus")
-    private String accountStatus;
+    private AccountStatus accountStatus;
 
     private List<BICDirectoryEntryDto> bicDirectoryEntries;
 
