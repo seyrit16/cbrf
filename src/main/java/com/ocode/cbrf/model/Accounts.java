@@ -1,5 +1,6 @@
 package com.ocode.cbrf.model;
 
+import com.ocode.cbrf.invariants.AccountStatus;
 import com.ocode.cbrf.invariants.RegulationAccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -50,7 +51,7 @@ public class Accounts {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_status")
-    private String accountStatus;
+    private AccountStatus accountStatus;
 
     @ManyToMany(mappedBy = "accounts")
     private List<BICDirectoryEntry> bicDirectoryEntries;
