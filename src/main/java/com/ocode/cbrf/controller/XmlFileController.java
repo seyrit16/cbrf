@@ -1,7 +1,6 @@
 package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.dto.impl.*;
-import com.ocode.cbrf.dto.mapper.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.service.*;
 import com.ocode.cbrf.service.impl.XmlFileServiceImpl;
@@ -11,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
-
+//http://localhost:8080/api/xml_file/upload?fileName=20230518_ED807_full.xml
+//http://localhost:8080/api/xml_file/upload?fileName=20220630_ED807_full.xml
 @Controller
 @RequestMapping("/api/xml_file")
 public class XmlFileController {
@@ -40,9 +40,8 @@ public class XmlFileController {
     DtoService dtoService;
 
     @GetMapping("/upload")
-    public ResponseEntity<String> uploadFile(){
+    public ResponseEntity<String> uploadFile(@RequestParam("fileName") String fileName){
         try{
-            String fileName = "20220630_ED807_full.xml";
             ED807Dto ed807Dto = xmlFileService.unmarshalXml(fileName);
             ////////
             ED807 ed807 = dtoService.toEntities(ed807Dto);
