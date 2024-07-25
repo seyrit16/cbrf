@@ -4,6 +4,9 @@ import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.repository.BICDirectoryEntryRepository;
 import com.ocode.cbrf.service.BICDirectoryEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,9 +43,8 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     }
 
     @Override
-    public List<BICDirectoryEntry> getBICDirectoryEntriesByEd807_ID(Long edId) {
-        List<BICDirectoryEntry> bicDirectoryEntries =
-                bicDirectoryEntryRepository.findBICDirectoryEntriesByEd807_ID(edId);
-        return bicDirectoryEntries;
+    public Page<BICDirectoryEntry> getBICDirectoryEntriesByEd807_ID(Long edId, int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        return bicDirectoryEntryRepository.findBICDirectoryEntriesByEd807_ID(edId, pageable);
     }
 }
