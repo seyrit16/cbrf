@@ -11,5 +11,7 @@ public interface BICDirectoryEntryService {
     void delete(Long id);
     List<BICDirectoryEntry> getAll();
     Optional<BICDirectoryEntry> getByBic(Integer bic);
-    Page<BICDirectoryEntry> getBICDirectoryEntriesByEd807_ID(Long edId, int page, int size);
+    Page<BICDirectoryEntry> getByEd807_ID(Long edId, int page, int size);
+    Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName,
+                                                                   String piType, int page, int size);
 }
