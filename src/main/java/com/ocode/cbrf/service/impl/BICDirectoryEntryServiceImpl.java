@@ -43,14 +43,12 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     }
 
     @Override
-    public Page<BICDirectoryEntry> getByEd807_ID(Long edId, int page, int size) {
-        Pageable pageable = PageRequest.of(page,size);
+    public Page<BICDirectoryEntry> getByEd807_ID(Long edId, Pageable pageable) {
         return bicDirectoryEntryRepository.findByEd807_ID(edId, pageable);
     }
 
     @Override
-    public Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName, String piType, int page, int size) {
-        Pageable pageable = PageRequest.of(page,size);
+    public Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName, String piType, Pageable pageable) {
         return bicDirectoryEntryRepository.findByEd807_IDAndParticipantInfo_NameAndParticipantInfo_ParticipantType(edId,piName,piType,pageable);
     }
 }

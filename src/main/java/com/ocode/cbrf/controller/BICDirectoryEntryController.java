@@ -6,6 +6,8 @@ import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.service.BICDirectoryEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,11 +28,10 @@ public class BICDirectoryEntryController {
 
     @GetMapping("/search/by_ed")
     public List<BICDirectoryEntryDto> getByED807(@RequestParam("edId") Long edId,
-                                                 @RequestParam(name = "page", defaultValue = "0") int page,
-                                                 @RequestParam(name = "size", defaultValue = "20") int size){
+                                                 @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
             Page<BICDirectoryEntry> bicDirectoryEntries =
-                    bicDirectoryEntryService.getByEd807_ID(edId, page, size);
+                    bicDirectoryEntryService.getByEd807_ID(edId, pageable);
             List<BICDirectoryEntryDto> bdeDto = new ArrayList<>();
             for(BICDirectoryEntry bde: bicDirectoryEntries)
                 bdeDto.add(bicDirectoryEntryMapper.toDto(bde));
@@ -49,12 +50,10 @@ public class BICDirectoryEntryController {
     public List<BICDirectoryEntryDto> getByParticipantNameAndParticipantType(@RequestParam("edId")Long edId,
                                                                              @RequestParam(name = "piName", required = false) String piName,
                                                                              @RequestParam(name = "piType", required = false) String piType,
-                                                                             @RequestParam(name = "page", defaultValue = "0") int page,
-                                                                             @RequestParam(name = "size", defaultValue = "20") int size){
+                                                                             @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
-            System.out.println(piName);
             Page<BICDirectoryEntry> bicDirectoryEntries =
-                    bicDirectoryEntryService.getByParticipantNameAndParticipantType(edId,piName,piType,page,size);
+                    bicDirectoryEntryService.getByParticipantNameAndParticipantType(edId,piName,piType,pageable);
             List<BICDirectoryEntryDto> bdeDto = new ArrayList<>();
             for (BICDirectoryEntry bde: bicDirectoryEntries)
                 bdeDto.add(bicDirectoryEntryMapper.toDto(bde));
