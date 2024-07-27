@@ -4,11 +4,12 @@ import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.repository.ED807Repository;
 import com.ocode.cbrf.service.ED807Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,32 +28,38 @@ public class ED807ServiceImpl implements ED807Service {
     }
 
     @Override
-    public List<ED807> getAll() {
-        return ed807Repository.findAll();
+    public ED807 update(ED807 ed807) {
+        return ed807Repository.save(ed807);
     }
 
     @Override
-    public List<ED807> getAllBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return ed807Repository.findAllBetweenDates(startDate, endDate);
+    public Page<ED807> getByUser_Id(Long userId, Pageable pageable) {
+        return ed807Repository.findAll(userId, pageable);
     }
 
     @Override
-    public List<ED807> getAllByAuthor(Long author) {
-        return ed807Repository.findAllByAuthor(author);
+    public Page<ED807> getByTitleContaining(Long userId, String title, Pageable pageable) {
+        return ed807Repository.findByTitleContaining(userId, title, pageable);
     }
 
     @Override
-    public List<ED807> getAllByCreationDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return ed807Repository.findAllBetweenCreationDateTime(startDateTime, endDateTime);
+    public Optional<ED807> getByTitle(Long userId, String title) {
+        return ed807Repository.findByTitle(userId, title);
     }
 
     @Override
-    public List<ED807> getAllByReceiver(Long receiver) {
-        return ed807Repository.findAllByReceiver(receiver);
+    public Page<ED807> getBetweenDates(Long userId, LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return ed807Repository.findBetweenDates(userId, startDate, endDate, pageable);
     }
 
     @Override
-    public Optional<ED807> getByNumber(Integer number) {
-        return ed807Repository.findByNumber(number);
+    public Page<ED807> getBetweenCreationDateTime(Long userId, LocalDateTime startDateTime,
+                                                  LocalDateTime endDateTime, Pageable pageable) {
+        return ed807Repository.findBetweenCreationDateTime(userId, startDateTime, endDateTime, pageable);
+    }
+
+    @Override
+    public Page<ED807> getBetweenUploadDate(Long userId, LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return ed807Repository.findBetweenUploadDate(userId, startDate, endDate, pageable);
     }
 }

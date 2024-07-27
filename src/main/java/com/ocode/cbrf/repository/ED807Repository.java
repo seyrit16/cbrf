@@ -1,38 +1,61 @@
 package com.ocode.cbrf.repository;
 
 import com.ocode.cbrf.model.ED807;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ED807Repository extends JpaRepository<ED807, Long> {
-    @Query(value = "select * from ed807", nativeQuery = true)
-    List<ED807> findAll();
-
-    @Query(value = "select * from ed807 as ed where ed.number = :number limit 1", nativeQuery = true)
-    Optional<ED807> findByNumber(@Param("number") Integer number);
-
-    @Query(value = "select * from ed807 as ed where ed.date between :startDate and :endDate", nativeQuery = true)
-    List<ED807> findAllBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query(value = "select * from ed807 as ed where ed.author = :author", nativeQuery = true)
-    List<ED807> findAllByAuthor(@Param("author") Long author);
-
-    @Query(value = "select * from ed807 as ed where ed.receiver = :receiver", nativeQuery = true)
-    List<ED807> findAllByReceiver(@Param("receiver") Long receiver);
-
-    @Query(value = "select * from ed807 as ed where ed.creation_date_time between :startDateTime and :endDateTime",
+    @Query(value = "select * from ed807 as ed \n" +
+            "inner join user_ed807 as u_ed \n" +
+            " on u_ed.ed807_id =  ed.id \n" +
+            "where u_ed.user_id = :user_id",
             nativeQuery = true)
-    List<ED807> findAllBetweenCreationDateTime(
-            @Param("startDateTime") LocalDateTime startDateTime,
-            @Param("endDateTime") LocalDateTime endDateTime
-    );
+    Page<ED807> findAll(@Param("user_id") Long userId, Pageable pageable);
+
+    @Query(value = "select * from ed807 as ed \n" +
+            "inner join user_ed807 as u_ed \n" +
+            " on u_ed.ed807_id =  ed.id \n" +
+            "where u_ed.user_id = :user_id and ed.title like :title",
+            nativeQuery = true)
+    Page<ED807> findByTitleContaining(@Param("user_id") Long userId, @Param("title") String Title, Pageable pageable);
+
+    @Query(value = "select * from ed807 as ed \n" +
+            "inner join user_ed807 as u_ed \n" +
+            " on u_ed.ed807_id =  ed.id \n" +
+            "where u_ed.user_id = :user_id and ed.title = :title",
+            nativeQuery = true)
+    Optional<ED807> findByTitle(@Param("user_id") Long userId, @Param("title") String Title);
+
+    @Query(value = "select * from ed807 as ed \n" +
+            "inner join user_ed807 as u_ed \n" +
+            " on u_ed.ed807_id =  ed.id \n" +
+            "where u_ed.user_id = :user_id and ed.date between :startDate and :endDate",
+            nativeQuery = true)
+    Page<ED807> findBetweenDates(@Param("user_id") Long userId, @Param("startDate") LocalDate startDate,
+                                 @Param("endDate") LocalDate endDate, Pageable pageable);
+
+    @Query(value = "select * from ed807 as ed \n" +
+            "inner join user_ed807 as u_ed \n" +
+            " on u_ed.ed807_id =  ed.id \n" +
+            "where u_ed.user_id = :user_id and ed.creation_date_time between :startDateTime and :endDateTime",
+            nativeQuery = true)
+    Page<ED807> findBetweenCreationDateTime(@Param("user_id") Long userId, @Param("startDateTime") LocalDateTime startDateTime,
+                                            @Param("endDateTime") LocalDateTime endDateTime, Pageable pageable);
+
+    @Query(value = "select * from ed807 as ed \n" +
+            "inner join user_ed807 as u_ed \n" +
+            " on u_ed.ed807_id =  ed.id \n" +
+            "where u_ed.user_id = :user_id and ed.upload_date between :startDate and :endDate",
+            nativeQuery = true)
+    Page<ED807> findBetweenUploadDate(@Param("user_id") Long userId, @Param("startDate") LocalDate startDate,
+                                      @Param("endDate") LocalDate endDate, Pageable pageable);
 }
