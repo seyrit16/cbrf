@@ -5,6 +5,8 @@ import com.ocode.cbrf.adapter.OffsetDateTimeAdapter;
 import com.ocode.cbrf.dto.Dto;
 import com.ocode.cbrf.invariants.CreationReason;
 import com.ocode.cbrf.invariants.InfoTypeCode;
+import jakarta.persistence.Column;
+import jakarta.persistence.Transient;
 import jakarta.xml.bind.annotation.*;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import lombok.*;
@@ -27,6 +29,15 @@ public class ED807Dto implements Dto {
     @Positive
     @XmlTransient
     private Long id;
+
+    @Transient
+    private String title;
+
+    @Transient
+    private String fileName;
+
+    @Transient
+    private LocalDate uploadDate;
 
     @NotNull
     @XmlAttribute(name = "EDNo")

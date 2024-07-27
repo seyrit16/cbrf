@@ -27,6 +27,15 @@ public class ED807 {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "upload_date")
+    private LocalDate uploadDate;
+
     @NonNull
     @Column(name = "number")
     private Integer number;
