@@ -81,4 +81,6 @@ public class ED807Dto implements Dto {
 
     @XmlElement(name = "BICDirectoryEntry", namespace = "urn:cbr-ru:ed:v2.0")
     private List<BICDirectoryEntryDto> bicDirectoryEntries;
+
+    private Boolean deleted;
 }

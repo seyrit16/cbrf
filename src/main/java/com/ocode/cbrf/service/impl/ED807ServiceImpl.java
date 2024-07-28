@@ -32,12 +32,18 @@ public class ED807ServiceImpl implements ED807Service {
 
     @Override
     public void delete(Long id) {
-
+        Optional<ED807> optionalED807 = ed807Repository.findById(id);
+        ED807 ed807 = optionalED807.orElse(null);
+        if (ed807 != null) {
+            ed807.setDeleted(true);
+            ed807.setTitle(ed807.getTitle() + " - удалено: " + LocalDate.now());
+            save(ed807);
+        }
     }
 
     @Override
-    public int update(Long userId,Map<String,String> data) {
-        try{
+    public int update(Long userId, Map<String, String> data) {
+        try {
             String title = data.get("title");
             ED807 ed807 = getByTitle(userId, title).orElse(null);
             if (ed807 == null)
@@ -62,7 +68,7 @@ public class ED807ServiceImpl implements ED807Service {
 
             ed807Repository.save(ed807);
             return 200;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 500;
         }

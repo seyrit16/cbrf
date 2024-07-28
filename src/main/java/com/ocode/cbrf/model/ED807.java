@@ -85,4 +85,7 @@ public class ED807 {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "ed807s")
     private Set<User> users;
+
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 }

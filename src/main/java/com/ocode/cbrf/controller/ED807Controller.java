@@ -3,8 +3,6 @@ package com.ocode.cbrf.controller;
 import com.ocode.cbrf.config.security.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.dto.mapper.ED807MapperImpl;
-import com.ocode.cbrf.invariants.CreationReason;
-import com.ocode.cbrf.invariants.InfoTypeCode;
 import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.repository.UserRepository;
@@ -21,12 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ed")
@@ -55,6 +50,17 @@ public class ED807Controller {
                 case (500) -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                 default -> new ResponseEntity<>(HttpStatus.OK);
             };
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> delete(@RequestParam("edId") Long edId){
+        try{
+            ed807Service.delete(edId);
+            return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
