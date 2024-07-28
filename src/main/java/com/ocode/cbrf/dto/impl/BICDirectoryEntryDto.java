@@ -36,4 +36,6 @@ public class BICDirectoryEntryDto implements Dto {
 
     @XmlElement(name = "SWBICS", namespace = "urn:cbr-ru:ed:v2.0")
     private List<SWBICSDto> swbicsList;
+
+    private Boolean deleted;
 }
