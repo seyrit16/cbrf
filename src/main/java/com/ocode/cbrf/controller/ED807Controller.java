@@ -49,31 +49,13 @@ public class ED807Controller {
         User user = userRepository.findUserByLogin(currentUsername).get();
 
         try{
-            String title = data.get("title");
-            ED807 ed807 = ed807Service.getByTitle(user.getId(), title).orElse(null);
-            if(ed807 == null)
+            int status = ed807Service.update(user.getId(), data);
+            if(status == 404)
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if(status == 500)
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-            Optional.ofNullable(data.get("newTitle")).ifPresent(ed807::setTitle);
-            Optional.ofNullable(data.get("number")).map(Integer::parseInt).ifPresent(ed807::setNumber);
-            Optional.ofNullable(data.get("date"))
-                    .map(dateStr->LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    .ifPresent(ed807::setDate);
-            Optional.ofNullable(data.get("author")).map(Long::parseLong).ifPresent(ed807::setAuthor);
-            Optional.ofNullable(data.get("receiver")).map(Long::parseLong).ifPresent(ed807::setReceiver);
-            Optional.ofNullable(data.get("creationReason")).map(CreationReason::valueOf).ifPresent(ed807::setCreationReason);
-            Optional.ofNullable(data.get("creationDatetime"))
-                    .map(dateStr->OffsetDateTime.parse(dateStr,DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-                    .ifPresent(ed807::setCreationDateTime);
-            Optional.ofNullable(data.get("infoTypeCode")).map(InfoTypeCode::valueOf).ifPresent(ed807::setInfoTypeCode);
-            Optional.ofNullable(data.get("businessDay"))
-                    .map(dateStr->LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                    .ifPresent(ed807::setBusinessDay);
-            Optional.ofNullable(data.get("directoryVersion")).map(Integer::parseInt).ifPresent(ed807::setDirectoryVersion);
-
-            ed807Service.update(ed807);
             return new ResponseEntity<>(HttpStatus.OK);
-
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

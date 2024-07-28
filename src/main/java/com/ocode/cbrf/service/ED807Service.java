@@ -6,12 +6,13 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ED807Service {
     ED807 save(ED807 ed807);
     void delete(Long id);
-    ED807 update (ED807 ed807);
+    int update (Long userId, Map<String,String> data);
     Page<ED807> getByUser_Id(Long userId, Pageable pageable);
     Page<ED807> getByTitleContaining(Long userId, String title, Pageable pageable);
     Optional<ED807> getByTitle(Long userId, String title);
