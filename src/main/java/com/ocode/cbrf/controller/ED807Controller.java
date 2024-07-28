@@ -50,12 +50,11 @@ public class ED807Controller {
 
         try{
             int status = ed807Service.update(user.getId(), data);
-            if(status == 404)
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            if(status == 500)
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
-            return new ResponseEntity<>(HttpStatus.OK);
+            return switch (status) {
+                case (404) -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                case (500) -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                default -> new ResponseEntity<>(HttpStatus.OK);
+            };
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
