@@ -10,6 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    @Query(value = "select r.role from role as r where r.id = :roleId", nativeQuery = true)
-    Optional<String> findRoleByRoleId(@Param("roleId") Long roleId);
+    @Query(value = "select * from role as r where r.role = :role", nativeQuery = true)
+    Optional<Role> findRoleByRolename(@Param("role") String role);
+
+    @Query(value = "SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM User u WHERE u.role = :role AND u.is_deleted = true", nativeQuery = true)
+    Boolean existsUserWithRole(@Param("role") String role);
 }
