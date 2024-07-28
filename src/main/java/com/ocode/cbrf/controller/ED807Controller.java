@@ -12,7 +12,6 @@ import com.ocode.cbrf.service.impl.ED807ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -185,7 +184,7 @@ public class ED807Controller {
         }
     }
 
-    @GetMapping("/search/between_date")
+    @GetMapping("/search/between_upload_date")
     public List<ED807Dto> getBetweenUploadDate(@RequestParam("startDate")LocalDate startDate,
                                           @RequestParam("endDate") LocalDate endDate,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){

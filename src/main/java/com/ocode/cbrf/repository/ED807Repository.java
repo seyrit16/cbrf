@@ -17,28 +17,32 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
             " on u_ed.ed807_id =  ed.id \n" +
-            "where u_ed.user_id = :user_id",
+            "where u_ed.user_id = :user_id\n" +
+            "group by ed.id",
             nativeQuery = true)
     Page<ED807> findAll(@Param("user_id") Long userId, Pageable pageable);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
             " on u_ed.ed807_id =  ed.id \n" +
-            "where u_ed.user_id = :user_id and ed.title like :title",
+            "where u_ed.user_id = :user_id and ed.title like :title\n" +
+            "group by ed.id",
             nativeQuery = true)
     Page<ED807> findByTitleContaining(@Param("user_id") Long userId, @Param("title") String Title, Pageable pageable);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
             " on u_ed.ed807_id =  ed.id \n" +
-            "where u_ed.user_id = :user_id and ed.title = :title",
+            "where u_ed.user_id = :user_id and ed.title = :title\n" +
+            "group by ed.id",
             nativeQuery = true)
     Optional<ED807> findByTitle(@Param("user_id") Long userId, @Param("title") String Title);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
             " on u_ed.ed807_id =  ed.id \n" +
-            "where u_ed.user_id = :user_id and ed.date between :startDate and :endDate",
+            "where u_ed.user_id = :user_id and ed.date between :startDate and :endDate\n" +
+            "group by ed.id",
             nativeQuery = true)
     Page<ED807> findBetweenDates(@Param("user_id") Long userId, @Param("startDate") LocalDate startDate,
                                  @Param("endDate") LocalDate endDate, Pageable pageable);
@@ -46,7 +50,8 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
             " on u_ed.ed807_id =  ed.id \n" +
-            "where u_ed.user_id = :user_id and ed.creation_date_time between :startDateTime and :endDateTime",
+            "where u_ed.user_id = :user_id and ed.creation_date_time between :startDateTime and :endDateTime\n" +
+            "group by ed.id",
             nativeQuery = true)
     Page<ED807> findBetweenCreationDateTime(@Param("user_id") Long userId, @Param("startDateTime") LocalDateTime startDateTime,
                                             @Param("endDateTime") LocalDateTime endDateTime, Pageable pageable);
@@ -54,7 +59,8 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
             " on u_ed.ed807_id =  ed.id \n" +
-            "where u_ed.user_id = :user_id and ed.upload_date between :startDate and :endDate",
+            "where u_ed.user_id = :user_id and ed.upload_date between :startDate and :endDate\n" +
+            "group by ed.id",
             nativeQuery = true)
     Page<ED807> findBetweenUploadDate(@Param("user_id") Long userId, @Param("startDate") LocalDate startDate,
                                       @Param("endDate") LocalDate endDate, Pageable pageable);
