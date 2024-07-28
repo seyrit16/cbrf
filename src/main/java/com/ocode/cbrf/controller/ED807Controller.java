@@ -71,6 +71,8 @@ public class ED807Controller {
                     .map(dateStr->LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                     .ifPresent(ed807::setBusinessDay);
             Optional.ofNullable(data.get("directoryVersion")).map(Integer::parseInt).ifPresent(ed807::setDirectoryVersion);
+
+            ed807Service.update(ed807);
             return new ResponseEntity<>(HttpStatus.OK);
 
         }catch (Exception e){
