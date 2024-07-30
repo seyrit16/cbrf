@@ -36,14 +36,13 @@ public class ED807Controller {
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody Map<String,String> data){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = "";
-        if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-            currentUsername = userDetails.getUsername();
-        }
-        User user = userRepository.findUserByLogin(currentUsername).get();
-
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = null;
+            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
+                user=userService.getUser(userDetails.getUsername()).get();
+            }
+
             int status = ed807Service.update(user.getId(), data);
             return switch (status) {
                 case (404) -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
