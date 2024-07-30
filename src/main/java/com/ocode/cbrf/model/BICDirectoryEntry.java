@@ -56,5 +56,5 @@ public class BICDirectoryEntry {
     private List<SWBICS> swbicsList;
 
     @Column(name = "deleted")
-    private Boolean deleted = false;
+    private Boolean deleted;
 }

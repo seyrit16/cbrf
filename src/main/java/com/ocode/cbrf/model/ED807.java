@@ -87,5 +87,5 @@ public class ED807 {
     private Set<User> users;
 
     @Column(name = "deleted")
-    private Boolean deleted = false;
+    private Boolean deleted;
 }
