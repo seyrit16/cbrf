@@ -39,14 +39,14 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     public int update(Long edId, Map<String,String> data) {
         try{
             Integer bic = Integer.parseInt(data.get("bic"));
-            BICDirectoryEntry bicDirectoryEntry = getByBic(edId, bic).orElse(null);
+            BICDirectoryEntry bicDirectoryEntry = getByBic(edId, bic,true).orElse(null);
             if (bicDirectoryEntry == null)
                 return 404;
 
             String newBicStr = data.get("newBic");
             if (newBicStr != null) {
                 Integer newBic = Integer.parseInt(data.get("newBic"));
-                BICDirectoryEntry foundBic = getByBic(edId, newBic).orElse(null);
+                BICDirectoryEntry foundBic = getByBic(edId, newBic,true).orElse(null);
                 if (foundBic != null && foundBic.getDeleted())
                     return 409;
 
@@ -68,17 +68,17 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     }
 
     @Override
-    public Optional<BICDirectoryEntry> getByBic(Long edId, Integer bic) {
-        return bicDirectoryEntryRepository.findByBic(edId, bic);
+    public Optional<BICDirectoryEntry> getByBic(Long edId, Integer bic,Boolean showDeleted) {
+        return bicDirectoryEntryRepository.findByBic(edId, bic, showDeleted);
     }
 
     @Override
-    public Page<BICDirectoryEntry> getByEd807_ID(Long edId, Pageable pageable) {
-        return bicDirectoryEntryRepository.findByEd807_ID(edId, pageable);
+    public Page<BICDirectoryEntry> getByEd807_ID(Long edId,Boolean showDeleted, Pageable pageable) {
+        return bicDirectoryEntryRepository.findByEd807_ID(edId, showDeleted, pageable);
     }
 
     @Override
-    public Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName, String piType, Pageable pageable) {
-        return bicDirectoryEntryRepository.findByEd807_IDAndParticipantInfo_NameAndParticipantInfo_ParticipantType(edId,piName,piType,pageable);
+    public Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName, String piType,Boolean showDeleted, Pageable pageable) {
+        return bicDirectoryEntryRepository.findByEd807_IDAndParticipantInfo_NameAndParticipantInfo_ParticipantType(edId,piName,piType,showDeleted,pageable);
     }
 }
