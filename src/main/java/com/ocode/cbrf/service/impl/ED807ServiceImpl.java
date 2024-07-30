@@ -45,7 +45,7 @@ public class ED807ServiceImpl implements ED807Service {
     public int update(Long userId, Map<String, String> data) {
         try {
             String title = data.get("title");
-            ED807 ed807 = getByTitle(userId, title).orElse(null);
+            ED807 ed807 = getByTitle(userId, title,true).orElse(null);
             if (ed807 == null)
                 return 404;
 
@@ -75,33 +75,33 @@ public class ED807ServiceImpl implements ED807Service {
     }
 
     @Override
-    public Page<ED807> getByUser_Id(Long userId, Pageable pageable) {
-        return ed807Repository.findAll(userId, pageable);
+    public Page<ED807> getByUser_Id(Long userId, Boolean showDeleted, Pageable pageable) {
+        return ed807Repository.findAll(userId,showDeleted, pageable);
     }
 
     @Override
-    public Page<ED807> getByTitleContaining(Long userId, String title, Pageable pageable) {
-        return ed807Repository.findByTitleContaining(userId, title, pageable);
+    public Page<ED807> getByTitleContaining(Long userId, String title, Boolean showDeleted, Pageable pageable) {
+        return ed807Repository.findByTitleContaining(userId, title,showDeleted,  pageable);
     }
 
     @Override
-    public Optional<ED807> getByTitle(Long userId, String title) {
-        return ed807Repository.findByTitle(userId, title);
+    public Optional<ED807> getByTitle(Long userId, String title, Boolean showDeleted) {
+        return ed807Repository.findByTitle(userId, title,showDeleted);
     }
 
     @Override
-    public Page<ED807> getBetweenDates(Long userId, LocalDate startDate, LocalDate endDate, Pageable pageable) {
-        return ed807Repository.findBetweenDates(userId, startDate, endDate, pageable);
+    public Page<ED807> getBetweenDates(Long userId, LocalDate startDate, LocalDate endDate, Boolean showDeleted, Pageable pageable) {
+        return ed807Repository.findBetweenDates(userId, startDate, endDate,showDeleted,  pageable);
     }
 
     @Override
     public Page<ED807> getBetweenCreationDateTime(Long userId, LocalDateTime startDateTime,
-                                                  LocalDateTime endDateTime, Pageable pageable) {
-        return ed807Repository.findBetweenCreationDateTime(userId, startDateTime, endDateTime, pageable);
+                                                  LocalDateTime endDateTime, Boolean showDeleted, Pageable pageable) {
+        return ed807Repository.findBetweenCreationDateTime(userId, startDateTime, endDateTime,showDeleted,  pageable);
     }
 
     @Override
-    public Page<ED807> getBetweenUploadDate(Long userId, LocalDate startDate, LocalDate endDate, Pageable pageable) {
-        return ed807Repository.findBetweenUploadDate(userId, startDate, endDate, pageable);
+    public Page<ED807> getBetweenUploadDate(Long userId, LocalDate startDate, LocalDate endDate, Boolean showDeleted, Pageable pageable) {
+        return ed807Repository.findBetweenUploadDate(userId, startDate, endDate,showDeleted,  pageable);
     }
 }

@@ -13,11 +13,11 @@ public interface ED807Service {
     ED807 save(ED807 ed807);
     void delete(Long id);
     int update (Long userId, Map<String,String> data);
-    Page<ED807> getByUser_Id(Long userId, Pageable pageable);
-    Page<ED807> getByTitleContaining(Long userId, String title, Pageable pageable);
-    Optional<ED807> getByTitle(Long userId, String title);
-    Page<ED807> getBetweenDates(Long userId, LocalDate startDate, LocalDate endDate, Pageable pageable);
+    Page<ED807> getByUser_Id(Long userId, Boolean showDeleted, Pageable pageable);
+    Page<ED807> getByTitleContaining(Long userId, String title, Boolean showDeleted, Pageable pageable);
+    Optional<ED807> getByTitle(Long userId, String title, Boolean showDeleted);
+    Page<ED807> getBetweenDates(Long userId, LocalDate startDate, LocalDate endDate, Boolean showDeleted, Pageable pageable);
     Page<ED807> getBetweenCreationDateTime(Long userId, LocalDateTime startDateTime, LocalDateTime endDateTime,
-                                           Pageable pageable);
-    Page<ED807> getBetweenUploadDate(Long userId, LocalDate startDate, LocalDate endDate, Pageable pageable);
+                                           Boolean showDeleted, Pageable pageable);
+    Page<ED807> getBetweenUploadDate(Long userId, LocalDate startDate, LocalDate endDate, Boolean showDeleted, Pageable pageable);
 }

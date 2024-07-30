@@ -77,7 +77,8 @@ public class ED807Controller {
         User user = userRepository.findUserByLogin(currentUsername).get();
 
         try {
-            Page<ED807> edPage = ed807Service.getByUser_Id(user.getId(), pageable);
+            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
+            Page<ED807> edPage = ed807Service.getByUser_Id(user.getId(),showDeleted, pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -102,7 +103,8 @@ public class ED807Controller {
         User user = userRepository.findUserByLogin(currentUsername).get();
 
         try {
-            Page<ED807> edPage = ed807Service.getByTitleContaining(user.getId(), title, pageable);
+            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
+            Page<ED807> edPage = ed807Service.getByTitleContaining(user.getId(), title,showDeleted, pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -129,7 +131,8 @@ public class ED807Controller {
         User user = userRepository.findUserByLogin(currentUsername).get();
 
         try {
-            Page<ED807> edPage = ed807Service.getBetweenDates(user.getId(), startDate, endDate, pageable);
+            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
+            Page<ED807> edPage = ed807Service.getBetweenDates(user.getId(), startDate, endDate,showDeleted, pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -156,7 +159,9 @@ public class ED807Controller {
         User user = userRepository.findUserByLogin(currentUsername).get();
 
         try {
-            Page<ED807> edPage = ed807Service.getBetweenCreationDateTime(user.getId(), startDateTime, endDateTime, pageable);
+            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
+            Page<ED807> edPage = ed807Service.getBetweenCreationDateTime(user.getId(), startDateTime,
+                    endDateTime,showDeleted, pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -183,7 +188,8 @@ public class ED807Controller {
         User user = userRepository.findUserByLogin(currentUsername).get();
 
         try {
-            Page<ED807> edPage = ed807Service.getBetweenUploadDate(user.getId(), startDate, endDate, pageable);
+            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
+            Page<ED807> edPage = ed807Service.getBetweenUploadDate(user.getId(), startDate, endDate,showDeleted, pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));

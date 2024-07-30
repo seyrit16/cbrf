@@ -20,7 +20,7 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
             "where u_ed.user_id = :user_id\n" +
             "group by ed.id",
             nativeQuery = true)
-    Page<ED807> findAll(@Param("user_id") Long userId, Pageable pageable);
+    Page<ED807> findAll(@Param("user_id") Long userId, @Param("deleted") Boolean showDeleted, Pageable pageable);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
@@ -28,7 +28,8 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
             "where u_ed.user_id = :user_id and ed.title like :title\n" +
             "group by ed.id",
             nativeQuery = true)
-    Page<ED807> findByTitleContaining(@Param("user_id") Long userId, @Param("title") String Title, Pageable pageable);
+    Page<ED807> findByTitleContaining(@Param("user_id") Long userId, @Param("title") String Title,
+                                      @Param("deleted") Boolean showDeleted, Pageable pageable);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
@@ -36,7 +37,7 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
             "where u_ed.user_id = :user_id and ed.title = :title\n" +
             "group by ed.id",
             nativeQuery = true)
-    Optional<ED807> findByTitle(@Param("user_id") Long userId, @Param("title") String Title);
+    Optional<ED807> findByTitle(@Param("user_id") Long userId, @Param("title") String Title, @Param("deleted") Boolean showDeleted);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
@@ -45,7 +46,7 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
             "group by ed.id",
             nativeQuery = true)
     Page<ED807> findBetweenDates(@Param("user_id") Long userId, @Param("startDate") LocalDate startDate,
-                                 @Param("endDate") LocalDate endDate, Pageable pageable);
+                                 @Param("endDate") LocalDate endDate, @Param("deleted") Boolean showDeleted,  Pageable pageable);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
@@ -54,7 +55,7 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
             "group by ed.id",
             nativeQuery = true)
     Page<ED807> findBetweenCreationDateTime(@Param("user_id") Long userId, @Param("startDateTime") LocalDateTime startDateTime,
-                                            @Param("endDateTime") LocalDateTime endDateTime, Pageable pageable);
+                                            @Param("endDateTime") LocalDateTime endDateTime, @Param("deleted") Boolean showDeleted,  Pageable pageable);
 
     @Query(value = "select * from ed807 as ed \n" +
             "inner join user_ed807 as u_ed \n" +
@@ -63,5 +64,5 @@ public interface ED807Repository extends JpaRepository<ED807, Long> {
             "group by ed.id",
             nativeQuery = true)
     Page<ED807> findBetweenUploadDate(@Param("user_id") Long userId, @Param("startDate") LocalDate startDate,
-                                      @Param("endDate") LocalDate endDate, Pageable pageable);
+                                      @Param("endDate") LocalDate endDate, @Param("deleted") Boolean showDeleted,  Pageable pageable);
 }
