@@ -16,10 +16,4 @@ public interface AccountRestrictionListRepository extends JpaRepository<AccountR
 
     @Query(value = "select * from account_restriction_list as arl where arl.id = :id limit 1", nativeQuery = true)
     Optional<AccountRestrictionList> findById(@Param("id") Long id);
-
-    @Query(value = "select *" +
-            " from account_restriction_list as arl" +
-            " where arl.account_restriction = :accountRestriction" +
-            " limit 1", nativeQuery = true)
-    Optional<AccountRestrictionList> findByAccountRestriction(@Param("accountRestriction") String accountRestriction);
 }
