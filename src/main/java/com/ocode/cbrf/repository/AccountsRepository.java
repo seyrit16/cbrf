@@ -17,16 +17,4 @@ public interface AccountsRepository extends JpaRepository<Accounts,Long> {
 
     @Query(value = "select * from accounts as a where a.id = :id limit 1",nativeQuery = true)
     Optional<Accounts> findById(@Param("id") Long id);
-
-    @Query(value = "select * from accounts as a where a.account = :account limit 1", nativeQuery = true)
-    Optional<Accounts> findByAccount(@Param("account") String account);
-
-    @Query(value = "select * from accounts as a where a.account_cbr_bic = :accountCbrBic",nativeQuery = true)
-    List<Accounts> findAllByAccountCBRBIC(@Param("accountCbrBic") Integer accountCbrBic);
-
-    @Query(value = "select * from accounts as a where a.date_in between :startDate and :endDate",nativeQuery = true)
-    List<Accounts> findAllBetweenDateIn(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query(value = "select * from accounts as a where a.date_out between :startDate and :endDate",nativeQuery = true)
-    List<Accounts> findAllBetweenDateOut(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
