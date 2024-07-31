@@ -15,18 +15,7 @@ public interface ParticipantInfoRepository extends JpaRepository<ParticipantInfo
     @Query(value = "select * from participant_info",nativeQuery = true)
     List<ParticipantInfo> findAll();
 
-    @Query(value = "select * from participant_info as pi where pi.id = :id limit 1",nativeQuery = true)
+    @Query(value = "select * from participant_info as pi pi.id = :id limit 1",
+            nativeQuery = true)
     Optional<ParticipantInfo> findById(@Param("id") Long id);
-
-    @Query(value = "select * from participant_info as pi where pi.name = :name limit 1",nativeQuery = true)
-    Optional<ParticipantInfo> findByName(@Param("name") String name);
-
-    @Query(value = "select * from participant_info as pi where pi.parent_bic = :parentBic",nativeQuery = true)
-    List<ParticipantInfo> findAllByParentBIC(@Param("parentBic") Integer parentBIC);
-
-    @Query(value = "select * from participant_info as pi where pi.date_in between :startDate and :endDate",nativeQuery = true)
-    List<ParticipantInfo> findAllBetweenDateIn(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query(value = "select * from participant_info as pi where pi.date_out between :startDate and :endDate", nativeQuery = true)
-    List<ParticipantInfo> findAllBetweenDateOut(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
