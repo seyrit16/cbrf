@@ -4,9 +4,6 @@ import com.ocode.cbrf.config.security.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.dto.mapper.ED807MapperImpl;
 import com.ocode.cbrf.model.ED807;
-import com.ocode.cbrf.model.user.User;
-import com.ocode.cbrf.repository.UserRepository;
-import com.ocode.cbrf.service.UserService;
 import com.ocode.cbrf.service.impl.ED807ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,19 +27,14 @@ public class ED807Controller {
     ED807ServiceImpl ed807Service;
     @Autowired
     ED807MapperImpl ed807Mapper;
-    @Autowired
-    UserService userService;
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody Map<String,String> data){
         try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            int status = ed807Service.update(user.getId(), data);
+            int status = ed807Service.update(userDetails.getId(), data);
             return switch (status) {
                 case (404) -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 case (500) -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,14 +60,10 @@ public class ED807Controller {
     @GetMapping("/search/all")
     public List<ED807Dto> getByUser_Id(@PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
-            Page<ED807> edPage = ed807Service.getByUser_Id(user.getId(),showDeleted, pageable);
+            Page<ED807> edPage = ed807Service.getByUser_Id(userDetails.getId(),userDetails.isAdmin(), pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -94,14 +81,10 @@ public class ED807Controller {
     @GetMapping("/serch/by_title")
     public List<ED807Dto> getByTitleContaining(@RequestParam("title") String title, @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
-            Page<ED807> edPage = ed807Service.getByTitleContaining(user.getId(), title,showDeleted, pageable);
+            Page<ED807> edPage = ed807Service.getByTitleContaining(userDetails.getId(), title, userDetails.isAdmin(), pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -121,14 +104,10 @@ public class ED807Controller {
                                                @RequestParam("endDate") LocalDate endDate,
                                                @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
-            Page<ED807> edPage = ed807Service.getBetweenDates(user.getId(), startDate, endDate,showDeleted, pageable);
+            Page<ED807> edPage = ed807Service.getBetweenDates(userDetails.getId(), startDate, endDate, userDetails.isAdmin(), pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -148,15 +127,11 @@ public class ED807Controller {
                                           @RequestParam("endDateTime") LocalDateTime endDateTime,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
-            Page<ED807> edPage = ed807Service.getBetweenCreationDateTime(user.getId(), startDateTime,
-                    endDateTime,showDeleted, pageable);
+            Page<ED807> edPage = ed807Service.getBetweenCreationDateTime(userDetails.getId(), startDateTime,
+                    endDateTime, userDetails.isAdmin(), pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));
@@ -176,14 +151,10 @@ public class ED807Controller {
                                           @RequestParam("endDate") LocalDate endDate,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
-            Page<ED807> edPage = ed807Service.getBetweenUploadDate(user.getId(), startDate, endDate,showDeleted, pageable);
+            Page<ED807> edPage = ed807Service.getBetweenUploadDate(userDetails.getId(), startDate, endDate, userDetails.isAdmin(), pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
             for(ED807 ed: edPage)
                 edDtoList.add(ed807Mapper.toDto(ed));

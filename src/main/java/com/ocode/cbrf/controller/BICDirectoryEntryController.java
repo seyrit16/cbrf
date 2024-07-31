@@ -3,19 +3,14 @@ package com.ocode.cbrf.controller;
 import com.ocode.cbrf.config.security.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.BICDirectoryEntryDto;
 import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapper;
-import com.ocode.cbrf.invariants.ChangeType;
 import com.ocode.cbrf.model.BICDirectoryEntry;
-import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.BICDirectoryEntryService;
-import com.ocode.cbrf.service.UserService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +28,6 @@ public class BICDirectoryEntryController {
     private BICDirectoryEntryMapper bicDirectoryEntryMapper;
     @Autowired
     private BICDirectoryEntryService bicDirectoryEntryService;
-    @Autowired
-    private UserService userService;
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){
@@ -68,14 +61,11 @@ public class BICDirectoryEntryController {
     public BICDirectoryEntryDto getByBic(@RequestParam("edId") Long edId, @RequestParam("bic") Integer bic,
                                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
-            Optional<BICDirectoryEntry> optionalBICDirectoryEntry = bicDirectoryEntryService.getByBic(edId,bic, showDeleted);
+            Optional<BICDirectoryEntry> optionalBICDirectoryEntry =
+                    bicDirectoryEntryService.getByBic(edId,bic, userDetails.isAdmin());
             return optionalBICDirectoryEntry.map(bicDirectoryEntry -> bicDirectoryEntryMapper.toDto(bicDirectoryEntry)).orElse(null);
         }catch (Exception e){
             e.printStackTrace();
@@ -87,15 +77,11 @@ public class BICDirectoryEntryController {
     public List<BICDirectoryEntryDto> getByED807(@RequestParam("edId") Long edId,
                                                  @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
             Page<BICDirectoryEntry> bicDirectoryEntries =
-                    bicDirectoryEntryService.getByEd807_ID(edId, showDeleted, pageable);
+                    bicDirectoryEntryService.getByEd807_ID(edId, userDetails.isAdmin(), pageable);
             List<BICDirectoryEntryDto> bdeDto = new ArrayList<>();
             for(BICDirectoryEntry bde: bicDirectoryEntries)
                 bdeDto.add(bicDirectoryEntryMapper.toDto(bde));
@@ -116,15 +102,11 @@ public class BICDirectoryEntryController {
                                                                              @RequestParam(name = "piType", required = false) String piType,
                                                                              @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            User user = null;
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                user=userService.getUser(userDetails.getUsername()).get();
-            }
+            CbrfUserDetails userDetails = (CbrfUserDetails)
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Boolean showDeleted = user.getRole().getRole().equals("ADMIN");
             Page<BICDirectoryEntry> bicDirectoryEntries =
-                    bicDirectoryEntryService.getByParticipantNameAndParticipantType(edId,piName,piType,showDeleted,pageable);
+                    bicDirectoryEntryService.getByParticipantNameAndParticipantType(edId,piName,piType,userDetails.isAdmin(),pageable);
             List<BICDirectoryEntryDto> bdeDto = new ArrayList<>();
             for (BICDirectoryEntry bde: bicDirectoryEntries)
                 bdeDto.add(bicDirectoryEntryMapper.toDto(bde));
