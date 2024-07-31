@@ -17,10 +17,4 @@ public interface RestrictionListRepository extends JpaRepository<RestrictionList
 
     @Query(value = "select * from restriction_list as rl where rl.id = :id limit 1",nativeQuery = true)
     Optional<RestrictionList> findById(@Param("id") Long id);
-
-    @Query(value = "select * from restriction_list as rl where rl.date between :startDate and :endDate", nativeQuery = true)
-    List<RestrictionList> findAllBetweenDate(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query(value = "select * from restriction_list as rl where rl.restriction = :restriction limit 1",nativeQuery = true)
-    Optional<RestrictionList> findByRestriction(@Param("restriction") String restriction);
 }
