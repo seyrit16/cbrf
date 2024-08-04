@@ -4,6 +4,7 @@ import com.ocode.cbrf.invariants.Rstr;
 import com.ocode.cbrf.model.RestrictionList;
 import com.ocode.cbrf.repository.RestrictionListRepository;
 import com.ocode.cbrf.service.RestrictionListService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,13 @@ public class RestrictionListServiceImpl implements RestrictionListService {
     RestrictionListRepository restrictionListRepository;
 
     @Override
+    @Transactional
     public RestrictionList save(RestrictionList restrictionList) {
         return restrictionListRepository.save(restrictionList);
     }
 
     @Override
+    @Transactional
     public void update(Long id, Map<String, String> data) {
         RestrictionList restrictionList = getById(id).orElse(null);
         if(restrictionList == null) throw new NullPointerException("restriction list is null");

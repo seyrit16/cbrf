@@ -20,6 +20,7 @@ public class AccountsServiceImpl implements AccountsService {
     AccountsRepository accountsRepository;
 
     @Override
+    @Transactional
     public Accounts save(Accounts accounts) {
         return accountsRepository.save(accounts);
     }

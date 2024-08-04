@@ -4,6 +4,7 @@ import com.ocode.cbrf.invariants.ChangeType;
 import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.repository.BICDirectoryEntryRepository;
 import com.ocode.cbrf.service.BICDirectoryEntryService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +22,13 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     private BICDirectoryEntryRepository bicDirectoryEntryRepository;
 
     @Override
+    @Transactional
     public BICDirectoryEntry save(BICDirectoryEntry bicDirectoryEntry) {
         return bicDirectoryEntryRepository.save(bicDirectoryEntry);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<BICDirectoryEntry> optionalBICDirectoryEntry = bicDirectoryEntryRepository.findById(id);
         BICDirectoryEntry bicDirectoryEntry = optionalBICDirectoryEntry.orElse(null);
@@ -36,6 +39,7 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     }
 
     @Override
+    @Transactional
     public int update(Long edId, Map<String,String> data) {
         try{
             Integer bic = Integer.parseInt(data.get("bic"));

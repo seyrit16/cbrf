@@ -4,6 +4,7 @@ import com.ocode.cbrf.invariants.ParticipantStatus;
 import com.ocode.cbrf.model.ParticipantInfo;
 import com.ocode.cbrf.repository.ParticipantInfoRepository;
 import com.ocode.cbrf.service.ParticipantInfoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,19 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
     ParticipantInfoRepository participantInfoRepository;
 
     @Override
+    @Transactional
     public ParticipantInfo save(ParticipantInfo participantInfo) {
         return participantInfoRepository.save(participantInfo);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
 
     }
 
     @Override
+    @Transactional
     public void update(Long id, Map<String, String> data) {
         ParticipantInfo participantInfo = getById(id).orElse(null);
         if(participantInfo == null)

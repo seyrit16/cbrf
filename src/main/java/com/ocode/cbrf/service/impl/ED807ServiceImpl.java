@@ -6,6 +6,7 @@ import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.repository.ED807Repository;
 import com.ocode.cbrf.service.ED807Service;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,11 +27,13 @@ public class ED807ServiceImpl implements ED807Service {
     private ED807Repository ed807Repository;
 
     @Override
+    @Transactional
     public ED807 save(ED807 ed807) {
         return ed807Repository.save(ed807);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Optional<ED807> optionalED807 = ed807Repository.findById(id);
         ED807 ed807 = optionalED807.orElse(null);
@@ -42,6 +45,7 @@ public class ED807ServiceImpl implements ED807Service {
     }
 
     @Override
+    @Transactional
     public int update(Long userId, Map<String, String> data) {
         try {
             String title = data.get("title");
