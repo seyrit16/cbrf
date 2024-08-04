@@ -10,5 +10,6 @@ public interface UserService {
     void updateUserLogin(String loginOld, String loginNew);
     void updateUserPassword(String login, String password);
     void updateUserIsActive(String login, Boolean activity);
+    void update(User user);
     Optional<User> getUser(String login);
 }

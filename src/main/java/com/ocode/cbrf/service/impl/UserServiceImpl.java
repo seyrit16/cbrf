@@ -112,6 +112,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void update(User user){
+        userRepository.save(user);
+    }
+
+    @Override
     public Optional<User> getUser(String login) {
         return userRepository.findUserByLogin(login);
     }
