@@ -2,6 +2,7 @@ package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.repository.AccountsRepository;
 import com.ocode.cbrf.service.AccountsService;
+import com.ocode.cbrf.service.impl.AccountsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.Map;
 @RequestMapping("/api/accounts")
 public class AccountsController {
     @Autowired
-    AccountsService accountsService;
+    AccountsServiceImpl accountsService;
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("acId") long acId, @RequestBody Map<String,String> data){

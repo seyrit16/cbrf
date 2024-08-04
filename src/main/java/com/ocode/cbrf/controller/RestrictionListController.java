@@ -1,6 +1,7 @@
 package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.service.RestrictionListService;
+import com.ocode.cbrf.service.impl.RestrictionListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.Map;
 @RequestMapping("/api/rstrList")
 public class RestrictionListController {
     @Autowired
-    RestrictionListService restrictionListService;
+    RestrictionListServiceImpl restrictionListService;
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("rstrId") Long rstrId, @RequestBody Map<String, String> data){

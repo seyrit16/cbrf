@@ -3,8 +3,10 @@ package com.ocode.cbrf.controller;
 import com.ocode.cbrf.config.security.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.BICDirectoryEntryDto;
 import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapper;
+import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapperImpl;
 import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.service.BICDirectoryEntryService;
+import com.ocode.cbrf.service.impl.BICDirectoryEntryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +27,9 @@ import java.util.Optional;
 @RequestMapping("/api/bic_directory_entry/")
 public class BICDirectoryEntryController {
     @Autowired
-    private BICDirectoryEntryMapper bicDirectoryEntryMapper;
+    private BICDirectoryEntryMapperImpl bicDirectoryEntryMapper;
     @Autowired
-    private BICDirectoryEntryService bicDirectoryEntryService;
+    private BICDirectoryEntryServiceImpl bicDirectoryEntryService;
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){

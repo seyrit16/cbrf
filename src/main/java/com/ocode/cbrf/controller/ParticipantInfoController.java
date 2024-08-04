@@ -1,6 +1,7 @@
 package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.service.ParticipantInfoService;
+import com.ocode.cbrf.service.impl.ParticipantInfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.Map;
 @RequestMapping("/api/pi")
 public class ParticipantInfoController {
     @Autowired
-    ParticipantInfoService participantInfoService;
+    ParticipantInfoServiceImpl participantInfoService;
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("piId") Long piId, @RequestBody Map<String, String> data){
