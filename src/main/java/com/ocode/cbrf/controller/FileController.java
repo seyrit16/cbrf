@@ -4,9 +4,7 @@ import com.ocode.cbrf.config.security.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.model.user.User;
-import com.ocode.cbrf.repository.UserRepository;
-import com.ocode.cbrf.service.*;
-import com.ocode.cbrf.service.impl.FileServiceImpl;
+import com.ocode.cbrf.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,23 +27,23 @@ import java.util.Set;
 public class FileController {
     final FileServiceImpl fileService;
 
-    final ED807Service ed807Service;
-    final BICDirectoryEntryService bicDirectoryEntryService;
-    final ParticipantInfoService participantInfoService;
-    final AccountsService accountsService;
-    final RestrictionListService restrictionListService;
-    final AccountRestrictionListService accountRestrictionListService;
-    final SWBICSService swbicsService;
-    final DtoService dtoService;
-    final UserRepository userRepository;
+    final ED807ServiceImpl ed807Service;
+    final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
+    final ParticipantInfoServiceImpl participantInfoService;
+    final AccountsServiceImpl accountsService;
+    final RestrictionListServiceImpl restrictionListService;
+    final AccountRestrictionListServiceImpl accountRestrictionListService;
+    final SWBICSServiceImpl swbicsService;
+    final DtoServiceImpl dtoService;
+    final UserServiceImpl userService;
 
     @Autowired
-    public FileController(FileServiceImpl fileService, ED807Service ed807Service,
-                          BICDirectoryEntryService bicDirectoryEntryService,
-                          ParticipantInfoService participantInfoService, AccountsService accountsService,
-                          RestrictionListService restrictionListService,
-                          AccountRestrictionListService accountRestrictionListService, SWBICSService swbicsService, DtoService dtoService,
-                          UserRepository userRepository) {
+    public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service,
+                          BICDirectoryEntryServiceImpl bicDirectoryEntryService,
+                          ParticipantInfoServiceImpl participantInfoService, AccountsServiceImpl accountsService,
+                          RestrictionListServiceImpl restrictionListService,
+                          AccountRestrictionListServiceImpl accountRestrictionListService,
+                          SWBICSServiceImpl swbicsService, DtoServiceImpl dtoService,UserServiceImpl userService) {
         this.fileService = fileService;
         this.ed807Service = ed807Service;
         this.bicDirectoryEntryService = bicDirectoryEntryService;
@@ -55,7 +53,7 @@ public class FileController {
         this.accountRestrictionListService = accountRestrictionListService;
         this.swbicsService = swbicsService;
         this.dtoService = dtoService;
-        this.userRepository = userRepository;
+        this.userService= userService;
     }
 
     @PostMapping("/upload")
@@ -102,11 +100,11 @@ public class FileController {
                 currentUsername = userDetails.getUsername();
             }
 
-            User user = userRepository.findUserByLogin(currentUsername).get();
+            User user = userService.getUser(currentUsername).get();
             Set<ED807> ed807Set = user.getEd807s()!=null ? user.getEd807s() : new HashSet<>();
             ed807Set.add(ed807);
             user.setEd807s(ed807Set);
-            userRepository.save(user);
+            userService.update(user);
 
             return new ResponseEntity<>(ed807.getBicDirectoryEntries().get(1).getBic().toString(),HttpStatus.OK);
         }catch (Exception e){
