@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(login + " does not exist");
         });
     }
-
+    
     @Override
     @Transactional
     public void updateUserIsActive(String login, Boolean activity) {
