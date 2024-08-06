@@ -1,6 +1,6 @@
-package com.ocode.cbrf.config.security;
+package com.ocode.cbrf.config.security.components;
 
-import com.ocode.cbrf.dto.impl.User.UserDto;
+import com.ocode.cbrf.dto.impl.user.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,5 +59,9 @@ public class CbrfUserDetails implements UserDetails {
 
     public Long getId() {
         return user.getId();
+    }
+
+    public String getRole() {
+        return user.getRole();
     }
 }

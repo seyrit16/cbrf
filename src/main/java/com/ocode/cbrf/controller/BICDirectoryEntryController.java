@@ -1,11 +1,9 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.config.security.CbrfUserDetails;
+import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.BICDirectoryEntryDto;
-import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapper;
 import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapperImpl;
 import com.ocode.cbrf.model.BICDirectoryEntry;
-import com.ocode.cbrf.service.BICDirectoryEntryService;
 import com.ocode.cbrf.service.impl.BICDirectoryEntryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

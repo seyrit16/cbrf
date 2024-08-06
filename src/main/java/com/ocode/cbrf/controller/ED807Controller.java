@@ -1,6 +1,6 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.config.security.CbrfUserDetails;
+import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.dto.mapper.ED807MapperImpl;
 import com.ocode.cbrf.model.ED807;

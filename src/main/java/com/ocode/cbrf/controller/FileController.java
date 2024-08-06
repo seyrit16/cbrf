@@ -1,6 +1,6 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.config.security.CbrfUserDetails;
+import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.model.user.User;
