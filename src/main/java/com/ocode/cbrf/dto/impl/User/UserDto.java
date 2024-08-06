@@ -1,4 +1,4 @@
-package com.ocode.cbrf.dto.impl.User;
+package com.ocode.cbrf.dto.impl.user;
 
 import com.ocode.cbrf.dto.Dto;
 import lombok.AllArgsConstructor;
