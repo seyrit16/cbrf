@@ -1,7 +1,7 @@
-package com.ocode.cbrf.service.impl;
+package com.ocode.cbrf.service.web;
 
 import com.ocode.cbrf.config.security.CbrfUserDetails;
-import com.ocode.cbrf.dto.impl.User.UserDto;
+import com.ocode.cbrf.dto.impl.user.UserDto;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.repository.UserRepository;
 import jakarta.transaction.Transactional;
