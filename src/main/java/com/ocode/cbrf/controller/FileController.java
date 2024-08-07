@@ -5,17 +5,22 @@ import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.*;
+import com.ocode.cbrf.service.web.JwtService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.SecretKey;
+import java.security.Key;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +31,6 @@ import java.util.Set;
 @RequestMapping("/api/file")
 public class FileController {
     final FileServiceImpl fileService;
-
     final ED807ServiceImpl ed807Service;
     final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
     final ParticipantInfoServiceImpl participantInfoService;
@@ -36,6 +40,7 @@ public class FileController {
     final SWBICSServiceImpl swbicsService;
     final DtoServiceImpl dtoService;
     final UserServiceImpl userService;
+    final JwtService jwtService;
 
     @Autowired
     public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service,
@@ -43,7 +48,8 @@ public class FileController {
                           ParticipantInfoServiceImpl participantInfoService, AccountsServiceImpl accountsService,
                           RestrictionListServiceImpl restrictionListService,
                           AccountRestrictionListServiceImpl accountRestrictionListService,
-                          SWBICSServiceImpl swbicsService, DtoServiceImpl dtoService,UserServiceImpl userService) {
+                          SWBICSServiceImpl swbicsService, DtoServiceImpl dtoService,UserServiceImpl userService,
+                          JwtService jwtService) {
         this.fileService = fileService;
         this.ed807Service = ed807Service;
         this.bicDirectoryEntryService = bicDirectoryEntryService;
@@ -54,11 +60,16 @@ public class FileController {
         this.swbicsService = swbicsService;
         this.dtoService = dtoService;
         this.userService= userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestBody MultipartFile file){
+    public ResponseEntity<String> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+                                             @RequestParam("title") String title,
+                                             @RequestBody MultipartFile file){
         try{
+            String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
+
             ED807Dto ed807Dto = fileService.unmarshalXml(fileService.convertMultipartFileToFile(file));
             ////////
             ED807 ed807 = dtoService.toEntities(ed807Dto);
@@ -92,15 +103,12 @@ public class FileController {
                 }
             }
             ed807.setDeleted(false);
+            ed807.setTitle(title);
+            ed807.setFileName(file.getOriginalFilename());
+            ed807.setUploadDate(LocalDate.now());
             ed807Service.save(ed807);
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String currentUsername = "";
-            if(authentication != null && authentication.getPrincipal() instanceof CbrfUserDetails userDetails){
-                currentUsername = userDetails.getUsername();
-            }
-
-            User user = userService.getUser(currentUsername).get();
+            User user = userService.getUser(username).get();
             Set<ED807> ed807Set = user.getEd807s()!=null ? user.getEd807s() : new HashSet<>();
             ed807Set.add(ed807);
             user.setEd807s(ed807Set);
