@@ -13,6 +13,7 @@ public interface ED807Service {
     ED807 save(ED807 ed807);
     void delete(Long id);
     int update (Long userId, Map<String,String> data);
+    Optional<ED807> getById(Long id);
     Page<ED807> getByUser_Id(Long userId, Boolean showDeleted, Pageable pageable);
     Page<ED807> getByTitleContaining(Long userId, String title, Boolean showDeleted, Pageable pageable);
     Optional<ED807> getByTitle(Long userId, String title, Boolean showDeleted);

@@ -48,12 +48,12 @@ public class ED807ServiceImpl implements ED807Service {
     @Transactional
     public int update(Long userId, Map<String, String> data) {
         try {
-            String title = data.get("title");
-            ED807 ed807 = getByTitle(userId, title,true).orElse(null);
+            Long id = Long.valueOf(data.get("id"));
+            ED807 ed807 = getById(id).orElse(null);
             if (ed807 == null)
                 return 404;
 
-            Optional.ofNullable(data.get("newTitle")).ifPresent(ed807::setTitle);
+            Optional.ofNullable(data.get("title")).ifPresent(ed807::setTitle);
             Optional.ofNullable(data.get("number")).map(Integer::parseInt).ifPresent(ed807::setNumber);
             Optional.ofNullable(data.get("date"))
                     .map(dateStr -> LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
@@ -76,6 +76,11 @@ public class ED807ServiceImpl implements ED807Service {
             e.printStackTrace();
             return 500;
         }
+    }
+
+    @Override
+    public Optional<ED807> getById(Long id) {
+        return ed807Repository.findById(id);
     }
 
     @Override
