@@ -53,7 +53,10 @@ public class ED807ServiceImpl implements ED807Service {
             if (ed807 == null)
                 return 404;
 
-            Optional.ofNullable(data.get("title")).ifPresent(ed807::setTitle);
+            Optional.ofNullable(data.get("title")).ifPresent(title -> {
+                if(getByTitle(userId,title,true).isEmpty())
+                    ed807.setTitle(title);
+            });
             Optional.ofNullable(data.get("number")).map(Integer::parseInt).ifPresent(ed807::setNumber);
             Optional.ofNullable(data.get("date"))
                     .map(dateStr -> LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")))
