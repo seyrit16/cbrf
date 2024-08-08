@@ -47,14 +47,14 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     @Transactional
     public int update(Long edId, Map<String,String> data) {
         try{
-            Integer bic = Integer.parseInt(data.get("bic"));
-            BICDirectoryEntry bicDirectoryEntry = getByBic(edId, bic,true).orElse(null);
+            Long id = Long.valueOf(data.get("id"));
+            BICDirectoryEntry bicDirectoryEntry = bicDirectoryEntryRepository.findById(id).orElse(null);
             if (bicDirectoryEntry == null)
                 return 404;
 
-            String newBicStr = data.get("newBic");
+            String newBicStr = data.get("bic");
             if (newBicStr != null) {
-                Integer newBic = Integer.parseInt(data.get("newBic"));
+                Integer newBic = Integer.parseInt(data.get("bic"));
                 BICDirectoryEntry foundBic = getByBic(edId, newBic,true).orElse(null);
                 if (foundBic != null && foundBic.getDeleted())
                     return 409;
