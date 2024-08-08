@@ -75,11 +75,15 @@ public class ED807Controller {
 
             Page<ED807> edPage = ed807Service.getByUser_Id(user.getId(),user.getRole().getRole().equals("ADMIN"), pageable);
             List<ED807Dto> edDtoList = new ArrayList<>();
-            for(ED807 ed: edPage)
+            for(ED807 ed: edPage) {
+                ed.setBicDirectoryEntries(new ArrayList<>());
                 edDtoList.add(ed807Mapper.toDto(ed));
+            }
 
             if(edDtoList.isEmpty())
                 return null;
+
+
 
             return edDtoList;
         }catch (Exception e){
