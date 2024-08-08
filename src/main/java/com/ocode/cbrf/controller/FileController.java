@@ -48,7 +48,7 @@ public class FileController {
                           ParticipantInfoServiceImpl participantInfoService, AccountsServiceImpl accountsService,
                           RestrictionListServiceImpl restrictionListService,
                           AccountRestrictionListServiceImpl accountRestrictionListService,
-                          SWBICSServiceImpl swbicsService, DtoServiceImpl dtoService,UserServiceImpl userService,
+                          SWBICSServiceImpl swbicsService, DtoServiceImpl dtoService, UserServiceImpl userService,
                           JwtService jwtService) {
         this.fileService = fileService;
         this.ed807Service = ed807Service;
@@ -59,48 +59,43 @@ public class FileController {
         this.accountRestrictionListService = accountRestrictionListService;
         this.swbicsService = swbicsService;
         this.dtoService = dtoService;
-        this.userService= userService;
+        this.userService = userService;
         this.jwtService = jwtService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                              @RequestParam("title") String title,
-                                             @RequestBody MultipartFile file){
-        try{
+                                             @RequestBody MultipartFile file) {
+        try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
 
             ED807Dto ed807Dto = fileService.unmarshalXml(fileService.convertMultipartFileToFile(file));
-            ////////
             ED807 ed807 = dtoService.toEntities(ed807Dto);
+
             List<BICDirectoryEntry> bicDirectoryEntries = ed807.getBicDirectoryEntries();
-            if(bicDirectoryEntries != null)
-            {
-                for(BICDirectoryEntry bde: bicDirectoryEntries)
-                {
-                    if(bde.getSwbicsList() != null){
-                        for(SWBICS s: bde.getSwbicsList())
-                            swbicsService.save(s);
+            if (bicDirectoryEntries != null) {
+                bicDirectoryEntries.parallelStream().forEach(bde -> {
+                    if (bde.getSwbicsList() != null) {
+                        bde.getSwbicsList().parallelStream().forEach(swbicsService::save);
                     }
                     ParticipantInfo participantInfo =bde.getParticipantInfo();
-                    if(participantInfo.getRestrictionLists() != null){
-                        for(RestrictionList rl: participantInfo.getRestrictionLists())
-                            restrictionListService.save(rl);
+                    if (participantInfo.getRestrictionLists() != null) {
+                        participantInfo.getRestrictionLists().parallelStream().forEach(restrictionListService::save);
                     }
                     participantInfoService.save(participantInfo);
-                    List<Accounts> accountsList = bde.getAccounts();
-                    if(accountsList != null){
-                        for(Accounts a: accountsList){
-                            if(a.getAccountRestrictionLists() != null){
-                                for(AccountRestrictionList arl: a.getAccountRestrictionLists())
-                                    accountRestrictionListService.save(arl);
+
+                    if (bde.getAccounts() != null) {
+                        bde.getAccounts().parallelStream().forEach(account -> {
+                            if (account.getAccountRestrictionLists() != null) {
+                                account.getAccountRestrictionLists().parallelStream().forEach(accountRestrictionListService::save);
                             }
-                            accountsService.save(a);
-                        }
+                            accountsService.save(account);
+                        });
                     }
                     bde.setDeleted(false);
-                    bicDirectoryEntryService.save(bde);
-                }
+                });
+                bicDirectoryEntryService.saveAll(bicDirectoryEntries);
             }
             ed807.setDeleted(false);
             ed807.setTitle(title);
@@ -109,13 +104,13 @@ public class FileController {
             ed807Service.save(ed807);
 
             User user = userService.getUser(username).get();
-            Set<ED807> ed807Set = user.getEd807s()!=null ? user.getEd807s() : new HashSet<>();
+            Set<ED807> ed807Set = user.getEd807s() != null ? user.getEd807s() : new HashSet<>();
             ed807Set.add(ed807);
             user.setEd807s(ed807Set);
             userService.update(user);
 
-            return new ResponseEntity<>(ed807.getBicDirectoryEntries().get(1).getBic().toString(),HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(ed807.getBicDirectoryEntries().get(1).getBic().toString(), HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

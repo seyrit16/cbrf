@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DtoServiceImpl implements DtoService {
@@ -30,54 +31,44 @@ public class DtoServiceImpl implements DtoService {
 
     @Override
     public ED807 toEntities(ED807Dto ed807Dto) {
-        // convert BICDirectoryEntriesDto to entity
         List<BICDirectoryEntryDto> bicDirectoryEntryDtos = ed807Dto.getBicDirectoryEntries();
-        List<BICDirectoryEntry> bicDirectoryEntries = new ArrayList<>();
-        for(BICDirectoryEntryDto bdeDto: bicDirectoryEntryDtos) {
+        List<BICDirectoryEntry> bicDirectoryEntries = bicDirectoryEntryDtos.parallelStream().map(bdeDto -> {
             BICDirectoryEntry bde = bicDirectoryEntryMapper.toEntity(bdeDto);
-            bicDirectoryEntries.add(bde);
-            // convert SWBICSDto to entity, and add to BICDirectoryEntry
-            List<SWBICSDto> swbicsDtos= bdeDto.getSwbicsList();
-            List<SWBICS> swbics = new ArrayList<>();
-            if(swbicsDtos != null){
-                for(SWBICSDto swbicsDto: swbicsDtos)
-                    swbics.add(swbicsMapper.toEntity(swbicsDto));
+
+            if (bdeDto.getSwbicsList() != null) {
+                List<SWBICS> swbics = bdeDto.getSwbicsList().parallelStream()
+                        .map(swbicsMapper::toEntity)
+                        .collect(Collectors.toList());
                 bde.setSwbicsList(swbics);
             }
-            // convert ParticipantInfoDto to entity, and add to BICDirectoryEntry
+
             ParticipantInfoDto participantInfoDto = bdeDto.getParticipantInfo();
             ParticipantInfo participantInfo = participantInfoMapper.toEntity(participantInfoDto);
-            // convert RestrictionList to entity, and add to ParticipantInfo
-            List<RestrictionListDto> restrictionListDtos = participantInfoDto.getRestrictionLists();
-            List<RestrictionList> restrictionLists = new ArrayList<>();
-            if(restrictionListDtos != null){
-                for (RestrictionListDto rlDto : restrictionListDtos)
-                    restrictionLists.add(restrictionListMapper.toEntity(rlDto));
+            if (participantInfoDto.getRestrictionLists() != null) {
+                List<RestrictionList> restrictionLists = participantInfoDto.getRestrictionLists().parallelStream()
+                        .map(restrictionListMapper::toEntity)
+                        .collect(Collectors.toList());
+                participantInfo.setRestrictionLists(restrictionLists);
             }
-            participantInfo.setRestrictionLists(restrictionLists);
             bde.setParticipantInfo(participantInfo);
-            // convert AccountsDto to entity, and add to BICDirectoryEntry
-            List<AccountsDto> accountsDtos = bdeDto.getAccounts();
-            List<Accounts> accounts = new ArrayList<>();
-            List<AccountsRestrictionListDto> accountsRestrictionListDtos = new ArrayList<>();
-            if(accountsDtos != null){
-                for (AccountsDto aDto : accountsDtos)
-                {
-                    Accounts account = accountsMapper.toEntity(aDto);
-                    // convert AccountRestrictionList to entity, and add to Accounts
-                    accountsRestrictionListDtos = aDto.getAccountRestrictionLists();
-                    if(accountsRestrictionListDtos != null){
-                        List<AccountRestrictionList> accountRestrictionLists = new ArrayList<>();
-                        for (AccountsRestrictionListDto arlDto : accountsRestrictionListDtos)
-                            accountRestrictionLists.add(accountsRestrictionListMapper.toEntity(arlDto));
-                        account.setAccountRestrictionLists(accountRestrictionLists);
 
+            if (bdeDto.getAccounts() != null) {
+                List<Accounts> accounts = bdeDto.getAccounts().parallelStream().map(aDto -> {
+                    Accounts account = accountsMapper.toEntity(aDto);
+                    if (aDto.getAccountRestrictionLists() != null) {
+                        List<AccountRestrictionList> accountRestrictionLists = aDto.getAccountRestrictionLists().parallelStream()
+                                .map(accountsRestrictionListMapper::toEntity)
+                                .collect(Collectors.toList());
+                        account.setAccountRestrictionLists(accountRestrictionLists);
                     }
-                    accounts.add(account);
-                }
+                    return account;
+                }).collect(Collectors.toList());
+                bde.setAccounts(accounts);
             }
-            bde.setAccounts(accounts);
-        }
+
+            return bde;
+        }).collect(Collectors.toList());
+
         ED807 ed807 = ed807Mapper.toEntity(ed807Dto);
         ed807.setBicDirectoryEntries(bicDirectoryEntries);
         return ed807;

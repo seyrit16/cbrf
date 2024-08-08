@@ -27,6 +27,11 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
         return bicDirectoryEntryRepository.save(bicDirectoryEntry);
     }
 
+    @Transactional
+    public void saveAll(List<BICDirectoryEntry> bicDirectoryEntries){
+        bicDirectoryEntryRepository.saveAll(bicDirectoryEntries);
+    }
+
     @Override
     @Transactional
     public void delete(Long id) {
