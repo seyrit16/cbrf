@@ -15,7 +15,7 @@ public interface ParticipantInfoRepository extends JpaRepository<ParticipantInfo
     @Query(value = "select * from participant_info",nativeQuery = true)
     List<ParticipantInfo> findAll();
 
-    @Query(value = "select * from participant_info as pi pi.id = :id limit 1",
+    @Query(value = "select * from participant_info as pi where pi.id = :id limit 1",
             nativeQuery = true)
     Optional<ParticipantInfo> findById(@Param("id") Long id);
 }
