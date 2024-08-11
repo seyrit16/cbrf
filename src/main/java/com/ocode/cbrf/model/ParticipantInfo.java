@@ -33,7 +33,7 @@ public class ParticipantInfo {
     @Column(name = "reg_number")
     private String regNumber;
 
-    @Column(name = "country code")
+    @Column(name = "country_code")
     private String countryCode;
 
     @NonNull
