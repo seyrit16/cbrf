@@ -65,7 +65,20 @@ public class BICDirectoryEntryController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/search/by_id")
+    public BICDirectoryEntryDto getById(@RequestParam("bicId") Long bicId){
+        try {
+            Optional<BICDirectoryEntry> optionalBICDirectoryEntry =
+                    bicDirectoryEntryService.getById(bicId);
+
+            return  optionalBICDirectoryEntry.map(bicDirectoryEntryMapper::toDto).orElse(null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/search/by_bic")
     public BICDirectoryEntryDto getByBic(@RequestParam("edId") Long edId, @RequestParam("bic") Integer bic,
                                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{

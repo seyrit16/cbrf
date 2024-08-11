@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +16,10 @@ import java.util.Optional;
 public interface BICDirectoryEntryRepository extends JpaRepository<BICDirectoryEntry, Long> {
     @Query(value = "select * from bic_directory_entry", nativeQuery = true)
     List<BICDirectoryEntry> findAll();
+
+    @Query(value = "select * from bic_directory_entry as bde where bde.id = :id",
+            nativeQuery = true)
+    Optional<BICDirectoryEntry> findById(@Param("id") Long id);
 
     @Query(value = "select bde.* \n" +
             "from bic_directory_entry as bde \n" +

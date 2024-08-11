@@ -13,6 +13,7 @@ public interface BICDirectoryEntryService {
     void delete(Long id);
     int update(Long edId, Map<String,String> data);
     List<BICDirectoryEntry> getAll();
+    Optional<BICDirectoryEntry> getById(Long id);
     Optional<BICDirectoryEntry> getByBic(Long edId, Integer bic,Boolean showDeleted);
     Page<BICDirectoryEntry> getByEd807_ID(Long edId,Boolean showDeleted, Pageable pageable);
     Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName,

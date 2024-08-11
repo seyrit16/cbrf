@@ -77,6 +77,11 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     }
 
     @Override
+    public Optional<BICDirectoryEntry> getById(Long id) {
+        return bicDirectoryEntryRepository.findById(id);
+    }
+
+    @Override
     public Optional<BICDirectoryEntry> getByBic(Long edId, Integer bic,Boolean showDeleted) {
         return bicDirectoryEntryRepository.findByBic(edId, bic, showDeleted);
     }
