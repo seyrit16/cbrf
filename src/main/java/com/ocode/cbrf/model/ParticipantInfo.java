@@ -92,6 +92,6 @@ public class ParticipantInfo {
     )
     private List<RestrictionList> restrictionLists;
 
-    @OneToMany(mappedBy = "participantInfo")
-    private List<BICDirectoryEntry> bicDirectoryEntries;
+//    @OneToMany(mappedBy = "participantInfo")
+//    private List<BICDirectoryEntry> bicDirectoryEntries;
 }

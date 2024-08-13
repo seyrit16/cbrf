@@ -32,7 +32,7 @@ public class BICDirectoryEntry {
     private ChangeType changeType;
 
     @NonNull
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "participant_info_id")
     private ParticipantInfo participantInfo;
 
