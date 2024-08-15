@@ -5,13 +5,10 @@ import com.ocode.cbrf.invariants.InfoTypeCode;
 import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.repository.ED807Repository;
 import com.ocode.cbrf.service.ED807Service;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

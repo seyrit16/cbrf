@@ -4,7 +4,6 @@ import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.dto.Dto;
 import com.ocode.cbrf.invariants.AccountStatus;
 import com.ocode.cbrf.invariants.RegulationAccountType;
-import com.ocode.cbrf.model.AccountRestrictionList;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;

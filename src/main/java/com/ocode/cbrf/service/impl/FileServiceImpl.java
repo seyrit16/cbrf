@@ -1,17 +1,18 @@
 package com.ocode.cbrf.service.impl;
 
-import com.ocode.cbrf.config.XmlStorageProperties;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.service.FileService;
 import jakarta.annotation.PostConstruct;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 
 @Service

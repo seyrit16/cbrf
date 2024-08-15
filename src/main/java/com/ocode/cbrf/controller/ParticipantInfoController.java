@@ -1,6 +1,5 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.service.ParticipantInfoService;
 import com.ocode.cbrf.service.impl.ParticipantInfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

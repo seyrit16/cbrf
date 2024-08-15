@@ -5,7 +5,6 @@ import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.dto.mapper.ED807MapperImpl;
 import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.model.user.User;
-import com.ocode.cbrf.service.UserService;
 import com.ocode.cbrf.service.impl.ED807ServiceImpl;
 import com.ocode.cbrf.service.impl.UserServiceImpl;
 import com.ocode.cbrf.service.web.JwtService;

@@ -2,7 +2,6 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.adapter.LocalDateAdapter;
 import com.ocode.cbrf.invariants.AccRstr;
-import com.ocode.cbrf.model.Accounts;
 import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,6 @@ import javax.validation.constraints.Positive;
 
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

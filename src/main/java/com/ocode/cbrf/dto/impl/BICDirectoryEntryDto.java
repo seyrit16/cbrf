@@ -2,7 +2,6 @@ package com.ocode.cbrf.dto.impl;
 
 import com.ocode.cbrf.dto.Dto;
 import com.ocode.cbrf.invariants.ChangeType;
-import jakarta.persistence.Enumerated;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
 

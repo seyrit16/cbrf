@@ -15,7 +15,6 @@ import javax.validation.constraints.Positive;
 
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

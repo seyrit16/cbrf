@@ -1,6 +1,5 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.service.RestrictionListService;
 import com.ocode.cbrf.service.impl.RestrictionListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

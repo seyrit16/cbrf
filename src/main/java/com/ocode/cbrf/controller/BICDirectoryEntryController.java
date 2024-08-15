@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-//http://localhost:8080/api/bic_directory_entry/search/by_ed?edId=1
-//http://localhost:8080/api/bic_directory_entry/search/by_ed_piName_piType?edId=1&piName=УФК%20по%20Астраханской%20области&piType=52
 @RestController
 @RequestMapping("/api/bic_directory_entry/")
 public class BICDirectoryEntryController {

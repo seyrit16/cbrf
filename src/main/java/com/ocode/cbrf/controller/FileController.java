@@ -1,32 +1,23 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.*;
 import com.ocode.cbrf.service.web.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.crypto.SecretKey;
-import java.security.Key;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//http://localhost:8080/api/xml_file/upload?fileName=20230518_ED807_full.xml
-//http://localhost:8080/api/xml_file/upload?fileName=20220630_ED807_full.xml
 @Controller
 @RequestMapping("/api/file")
 public class FileController {
