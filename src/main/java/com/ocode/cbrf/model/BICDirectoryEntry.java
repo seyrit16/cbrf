@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
@@ -17,7 +18,12 @@ import java.util.List;
 @Entity
 @Table(name = "bic_directory_entry")
 public class BICDirectoryEntry {
-
+    @PrePersist
+    public void prePersist() {
+        if (deleted == null) {
+            deleted = false;
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,27 +38,18 @@ public class BICDirectoryEntry {
     private ChangeType changeType;
 
     @NonNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "participant_info_id")
     private ParticipantInfo participantInfo;
 
-    @ManyToMany(mappedBy = "bicDirectoryEntries")
-    private List<ED807> ed807List;
+    @ManyToOne
+    @JoinColumn(name = "ed807_id")
+    private ED807 ed807;
 
-    @ManyToMany
-    @JoinTable(
-            name = "bicDirectoryEntry_accounts",
-            joinColumns = @JoinColumn(name = "bic_directory_entry_id"),
-            inverseJoinColumns = @JoinColumn(name = "accounts_id")
-    )
+    @OneToMany(mappedBy = "bicDirectoryEntry", cascade = CascadeType.PERSIST)
     private List<Accounts> accounts;
 
-    @ManyToMany
-    @JoinTable(
-            name = "bicDirectoryEntry_swbics",
-            joinColumns = @JoinColumn(name = "bic_directory_entry_id"),
-            inverseJoinColumns = @JoinColumn(name = "swbics_id")
-    )
+    @OneToMany(mappedBy = "bicDirectoryEntry", cascade = CascadeType.PERSIST)
     private List<SWBICS> swbicsList;
 
     @Column(name = "deleted")

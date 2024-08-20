@@ -64,12 +64,12 @@ public class DtoServiceImpl implements DtoService {
                 }).collect(Collectors.toList());
                 bde.setAccounts(accounts);
             }
-
             return bde;
-        }).collect(Collectors.toList());
+        }).toList();
 
         ED807 ed807 = ed807Mapper.toEntity(ed807Dto);
         ed807.setBicDirectoryEntries(bicDirectoryEntries);
+
         return ed807;
     }
 }

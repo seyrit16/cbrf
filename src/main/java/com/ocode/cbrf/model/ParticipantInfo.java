@@ -84,12 +84,7 @@ public class ParticipantInfo {
     @Column(name = "participant_status")
     private ParticipantStatus participantStatus;
 
-    @ManyToMany
-    @JoinTable(
-            name = "participantInfo_rstrList",
-            joinColumns = @JoinColumn(name = "participant_info_id"),
-            inverseJoinColumns = @JoinColumn(name = "rstr_list_id")
-    )
+    @OneToMany(mappedBy = "participantInfo", cascade = CascadeType.PERSIST)
     private List<RestrictionList> restrictionLists;
 
 }

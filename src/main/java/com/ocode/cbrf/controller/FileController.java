@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -64,31 +65,25 @@ public class FileController {
             ED807Dto ed807Dto = fileService.unmarshalXml(fileService.convertMultipartFileToFile(file));
             ED807 ed807 = dtoService.toEntities(ed807Dto);
 
-            List<BICDirectoryEntry> bicDirectoryEntries = ed807.getBicDirectoryEntries();
-            if (bicDirectoryEntries != null) {
-                bicDirectoryEntries.parallelStream().forEach(bde -> {
-                    if (bde.getSwbicsList() != null) {
-                        bde.getSwbicsList().parallelStream().forEach(swbicsService::save);
-                    }
-                    ParticipantInfo participantInfo =bde.getParticipantInfo();
-                    if (participantInfo.getRestrictionLists() != null) {
-                        participantInfo.getRestrictionLists().parallelStream().forEach(restrictionListService::save);
-                    }
-                    participantInfoService.save(participantInfo);
 
-                    if (bde.getAccounts() != null) {
-                        bde.getAccounts().parallelStream().forEach(account -> {
-                            if (account.getAccountRestrictionLists() != null) {
-                                account.getAccountRestrictionLists().parallelStream().forEach(accountRestrictionListService::save);
-                            }
-                            accountsService.save(account);
-                        });
-                    }
-                    bde.setDeleted(false);
-                });
-                bicDirectoryEntryService.saveAll(bicDirectoryEntries);
+            for (BICDirectoryEntry bde: ed807.getBicDirectoryEntries()){
+                List<SWBICS> swbics = bde.getSwbicsList();
+                Optional.ofNullable(swbics).ifPresent(s->s.parallelStream().forEach(swbics1 -> swbics1.setBicDirectoryEntry(bde)));
+
+                List<RestrictionList> restrictionLists = bde.getParticipantInfo().getRestrictionLists();
+                Optional.ofNullable(restrictionLists).ifPresent(rl->rl.parallelStream()
+                        .forEach(restrictionList -> restrictionList.setParticipantInfo(bde.getParticipantInfo())));
+
+                List<Accounts> accounts = bde.getAccounts();
+                Optional.ofNullable(accounts).ifPresent(a->a.parallelStream().forEach(accounts1 -> {
+                    Optional.ofNullable(accounts1.getAccountRestrictionLists()).ifPresent(arl->arl.parallelStream()
+                            .forEach(accountRestrictionList -> accountRestrictionList.setAccount(accounts1)));
+                    accounts1.setBicDirectoryEntry(bde);
+                }));
+
+                bde.setEd807(ed807);
             }
-            ed807.setDeleted(false);
+
             ed807.setTitle(title);
             ed807.setFileName(file.getOriginalFilename());
             ed807.setUploadDate(LocalDate.now());
@@ -100,10 +95,10 @@ public class FileController {
             user.setEd807s(ed807Set);
             userService.update(user);
 
-            return new ResponseEntity<>(ed807.getBicDirectoryEntries().get(1).getBic().toString(), HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

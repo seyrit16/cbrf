@@ -16,10 +16,4 @@ public interface SWBICSRepository extends JpaRepository<SWBICS, Long> {
 
     @Query(value = "select * from swbics as s where s.id = :id limit 1", nativeQuery = true)
     Optional<SWBICS> findById(@Param("id") Long id);
-
-    @Query(value = "select * from swbics as s where s.swbic = :swbic limit 1", nativeQuery = true)
-    Optional<SWBICS> findBySwbic(@Param("swbic") String swbic);
-
-    @Query(value = "select * from swbics as s where s.default_swbic = :defaultSwbic",nativeQuery = true)
-    List<SWBICS> findByDefaultSWBIC(@Param("defaultSwbic") boolean defaultSwbic);
 }

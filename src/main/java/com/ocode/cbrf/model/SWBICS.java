@@ -27,6 +27,7 @@ public class SWBICS {
     @Column(name = "default_swbic")
     private Boolean defaultSWBIC;
 
-    @ManyToMany(mappedBy = "swbicsList")
-    private List<BICDirectoryEntry> bicDirectoryEntries;
+    @ManyToOne
+    @JoinColumn(name = "bic_directory_entry_id")
+    private BICDirectoryEntry bicDirectoryEntry;
 }

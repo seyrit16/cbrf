@@ -4,10 +4,7 @@ import com.ocode.cbrf.invariants.CreationReason;
 import com.ocode.cbrf.invariants.InfoTypeCode;
 import com.ocode.cbrf.model.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
@@ -23,6 +20,13 @@ import java.util.Set;
 @Entity
 @Table(name = "ed807")
 public class ED807 {
+    @PrePersist
+    public void prePersist() {
+        if (deleted == null) {
+            deleted = false;
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -75,12 +79,7 @@ public class ED807 {
     @Column(name = "directory_version")
     private Integer directoryVersion;
 
-    @ManyToMany
-    @JoinTable(
-            name = "ed807_bicDirectoryEntry",
-            joinColumns = @JoinColumn(name = "ed807_id"),
-            inverseJoinColumns = @JoinColumn(name = "bic_directory_entry_id")
-    )
+    @OneToMany(mappedBy = "ed807",cascade = CascadeType.PERSIST)
     private List<BICDirectoryEntry> bicDirectoryEntries;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "ed807s")
@@ -88,4 +87,9 @@ public class ED807 {
 
     @Column(name = "deleted")
     private Boolean deleted;
+
+    public void addBICDirectoryEntry(BICDirectoryEntry bicDirectoryEntry){
+        bicDirectoryEntries.add(bicDirectoryEntry);
+        bicDirectoryEntry.setEd807(this);
+    }
 }

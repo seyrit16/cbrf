@@ -22,9 +22,7 @@ public interface BICDirectoryEntryRepository extends JpaRepository<BICDirectoryE
 
     @Query(value = "select bde.* \n" +
             "from bic_directory_entry as bde \n" +
-            "inner join ed807_bic_directory_entry as ed_bde \n" +
-            "   on bde.id = ed_bde.bic_directory_entry_id \n" +
-            "where ed_bde.ed807_id = :ed_id and bde.bic = :bic\n" +
+            "where bde.ed807_id = :ed_id and bde.bic = :bic\n" +
             "and (:deleted = true or bde.deleted = false) \n" +
             "group by bde.id",
             nativeQuery = true)
@@ -33,9 +31,7 @@ public interface BICDirectoryEntryRepository extends JpaRepository<BICDirectoryE
 
     @Query(value = "select bde.* \n" +
             "from bic_directory_entry as bde \n" +
-            "inner join ed807_bic_directory_entry as ed_bde \n" +
-            "   on bde.id = ed_bde.bic_directory_entry_id \n" +
-            "where ed_bde.ed807_id = :ed_id\n" +
+            "where bde.ed807_id = :ed_id\n" +
             "and (:deleted = true or bde.deleted = false) \n" +
             "group by bde.id",
             nativeQuery = true)
@@ -44,11 +40,9 @@ public interface BICDirectoryEntryRepository extends JpaRepository<BICDirectoryE
 
     @Query(value = "select bde.* \n" +
             "from bic_directory_entry as bde \n" +
-            "inner join ed807_bic_directory_entry as ed_bde \n" +
-            " on ed_bde.bic_directory_entry_id = bde.id \n" +
             "inner join participant_info as pi \n" +
             " on pi.id = bde.participant_info_id \n" +
-            "where ed_bde.ed807_id = :ed_id \n" +
+            "where bde.ed807_id = :ed_id \n" +
             "and (:pi_name is null or pi.name = :pi_name) \n" +
             "and (:pi_type is null or pi.participant_type = :pi_type) \n" +
             "and (:deleted = true or bde.deleted = false) \n" +

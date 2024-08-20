@@ -53,14 +53,10 @@ public class Accounts {
     @Column(name = "account_status")
     private AccountStatus accountStatus;
 
-    @ManyToMany(mappedBy = "accounts")
-    private List<BICDirectoryEntry> bicDirectoryEntries;
+    @ManyToOne
+    @JoinColumn(name = "bic_directory_entry_id")
+    private BICDirectoryEntry bicDirectoryEntry;
 
-    @ManyToMany
-    @JoinTable(
-            name = "accounts_accountRestrictionList",
-            joinColumns = @JoinColumn(name = "accounts"),
-            inverseJoinColumns =  @JoinColumn(name = "account_restriction_list")
-    )
+    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST)
     private List<AccountRestrictionList> accountRestrictionLists;
 }

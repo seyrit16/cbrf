@@ -33,6 +33,7 @@ public class RestrictionList {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    @ManyToMany(mappedBy = "restrictionLists")
-    private List<ParticipantInfo> participantInfos;
+    @ManyToOne
+    @JoinColumn(name = "participant_info_id")
+    private ParticipantInfo participantInfo;
 }

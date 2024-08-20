@@ -34,6 +34,7 @@ public class AccountRestrictionList {
     @Column(name = "successor_bic")
     private Integer successorBIC;
 
-    @ManyToMany(mappedBy = "accountRestrictionLists")
-    private List<Accounts> accountsList;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Accounts account;
 }

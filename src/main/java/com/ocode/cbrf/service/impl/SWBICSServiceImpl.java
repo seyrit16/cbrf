@@ -7,8 +7,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class SWBICSServiceImpl implements SWBICSService {
     @Autowired
@@ -17,12 +15,6 @@ public class SWBICSServiceImpl implements SWBICSService {
     @Override
     @Transactional
     public SWBICS save(SWBICS swbics) {
-        Optional<SWBICS> optionalSwbicsBySwbic = swbicsRepository.findBySwbic(swbics.getSwbic());
-        if(optionalSwbicsBySwbic.isEmpty())
-            return swbicsRepository.save(swbics);
-        else {
-            swbics.setId(optionalSwbicsBySwbic.get().getId());
-            return swbicsRepository.save(swbics);
-        }
+        return swbicsRepository.save(swbics);
     }
 }
