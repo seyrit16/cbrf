@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SWBICSServiceImpl implements SWBICSService {
-    @Autowired
-    SWBICSRepository swbicsRepository;
+    private final SWBICSRepository swbicsRepository;
+
+    public SWBICSServiceImpl(SWBICSRepository swbicsRepository) {
+        this.swbicsRepository = swbicsRepository;
+    }
 
     @Override
     @Transactional

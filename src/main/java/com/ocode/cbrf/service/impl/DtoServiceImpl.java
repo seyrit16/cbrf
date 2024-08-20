@@ -12,20 +12,23 @@ import java.util.stream.Collectors;
 
 @Service
 public class DtoServiceImpl implements DtoService {
-    @Autowired
-    ED807Mapper ed807Mapper;
-    @Autowired
-    BICDirectoryEntryMapper bicDirectoryEntryMapper;
-    @Autowired
-    ParticipantInfoMapper participantInfoMapper;
-    @Autowired
-    RestrictionListMapper restrictionListMapper;
-    @Autowired
-    AccountsMapper accountsMapper;
-    @Autowired
-    AccountsRestrictionListMapper accountsRestrictionListMapper;
-    @Autowired
-    SWBICSMapper swbicsMapper;
+    private final ED807Mapper ed807Mapper;
+    private final BICDirectoryEntryMapper bicDirectoryEntryMapper;
+    private final ParticipantInfoMapper participantInfoMapper;
+    private final RestrictionListMapper restrictionListMapper;
+    private final AccountsMapper accountsMapper;
+    private final AccountsRestrictionListMapper accountsRestrictionListMapper;
+    private final SWBICSMapper swbicsMapper;
+
+    public DtoServiceImpl(ED807Mapper ed807Mapper, BICDirectoryEntryMapper bicDirectoryEntryMapper, ParticipantInfoMapper participantInfoMapper, RestrictionListMapper restrictionListMapper, AccountsMapper accountsMapper, AccountsRestrictionListMapper accountsRestrictionListMapper, SWBICSMapper swbicsMapper) {
+        this.ed807Mapper = ed807Mapper;
+        this.bicDirectoryEntryMapper = bicDirectoryEntryMapper;
+        this.participantInfoMapper = participantInfoMapper;
+        this.restrictionListMapper = restrictionListMapper;
+        this.accountsMapper = accountsMapper;
+        this.accountsRestrictionListMapper = accountsRestrictionListMapper;
+        this.swbicsMapper = swbicsMapper;
+    }
 
 
     @Override

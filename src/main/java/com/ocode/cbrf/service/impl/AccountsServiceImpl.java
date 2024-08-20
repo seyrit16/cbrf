@@ -16,8 +16,11 @@ import java.util.Optional;
 
 @Service
 public class AccountsServiceImpl implements AccountsService {
-    @Autowired
-    AccountsRepository accountsRepository;
+    private final AccountsRepository accountsRepository;
+
+    public AccountsServiceImpl(AccountsRepository accountsRepository) {
+        this.accountsRepository = accountsRepository;
+    }
 
     @Override
     @Transactional
