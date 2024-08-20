@@ -11,8 +11,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/rstrList")
 public class RestrictionListController {
-    @Autowired
-    RestrictionListServiceImpl restrictionListService;
+    private final RestrictionListServiceImpl restrictionListService;
+
+    public RestrictionListController(RestrictionListServiceImpl restrictionListService) {
+        this.restrictionListService = restrictionListService;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("rstrId") Long rstrId, @RequestBody Map<String, String> data){

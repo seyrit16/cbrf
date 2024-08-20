@@ -21,17 +21,17 @@ import java.util.Set;
 @Controller
 @RequestMapping("/api/file")
 public class FileController {
-    final FileServiceImpl fileService;
-    final ED807ServiceImpl ed807Service;
-    final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
-    final ParticipantInfoServiceImpl participantInfoService;
-    final AccountsServiceImpl accountsService;
-    final RestrictionListServiceImpl restrictionListService;
-    final AccountRestrictionListServiceImpl accountRestrictionListService;
-    final SWBICSServiceImpl swbicsService;
-    final DtoServiceImpl dtoService;
-    final UserServiceImpl userService;
-    final JwtService jwtService;
+    private final FileServiceImpl fileService;
+    private final ED807ServiceImpl ed807Service;
+    private final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
+    private final ParticipantInfoServiceImpl participantInfoService;
+    private final AccountsServiceImpl accountsService;
+    private final RestrictionListServiceImpl restrictionListService;
+    private final AccountRestrictionListServiceImpl accountRestrictionListService;
+    private final SWBICSServiceImpl swbicsService;
+    private final DtoServiceImpl dtoService;
+    private final UserServiceImpl userService;
+    private final JwtService jwtService;
 
     @Autowired
     public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service,

@@ -26,14 +26,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/bic_directory_entry/")
 public class BICDirectoryEntryController {
-    @Autowired
-    private BICDirectoryEntryMapperImpl bicDirectoryEntryMapper;
-    @Autowired
-    private BICDirectoryEntryServiceImpl bicDirectoryEntryService;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private UserServiceImpl userService;
+    private final BICDirectoryEntryMapperImpl bicDirectoryEntryMapper;
+    private final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
+    private final JwtService jwtService;
+    private final UserServiceImpl userService;
+
+    public BICDirectoryEntryController(BICDirectoryEntryMapperImpl bicDirectoryEntryMapper, BICDirectoryEntryServiceImpl bicDirectoryEntryService, JwtService jwtService, UserServiceImpl userService) {
+        this.bicDirectoryEntryMapper = bicDirectoryEntryMapper;
+        this.bicDirectoryEntryService = bicDirectoryEntryService;
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){

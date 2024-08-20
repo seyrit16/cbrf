@@ -11,8 +11,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/pi")
 public class ParticipantInfoController {
-    @Autowired
-    ParticipantInfoServiceImpl participantInfoService;
+    private final ParticipantInfoServiceImpl participantInfoService;
+
+    public ParticipantInfoController(ParticipantInfoServiceImpl participantInfoService) {
+        this.participantInfoService = participantInfoService;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("piId") Long piId, @RequestBody Map<String, String> data){

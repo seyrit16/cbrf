@@ -11,8 +11,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountsController {
-    @Autowired
-    AccountsServiceImpl accountsService;
+    private final AccountsServiceImpl accountsService;
+
+    public AccountsController(AccountsServiceImpl accountsService) {
+        this.accountsService = accountsService;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("acId") long acId, @RequestBody Map<String,String> data){

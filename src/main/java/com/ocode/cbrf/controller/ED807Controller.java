@@ -27,14 +27,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/ed")
 public class ED807Controller {
-    @Autowired
-    ED807ServiceImpl ed807Service;
-    @Autowired
-    ED807MapperImpl ed807Mapper;
-    @Autowired
-    JwtService jwtService;
-    @Autowired
-    UserServiceImpl userService;
+    private final ED807ServiceImpl ed807Service;
+    private final ED807MapperImpl ed807Mapper;
+    private final JwtService jwtService;
+    private final UserServiceImpl userService;
+
+    public ED807Controller(ED807ServiceImpl ed807Service, ED807MapperImpl ed807Mapper, JwtService jwtService, UserServiceImpl userService) {
+        this.ed807Service = ed807Service;
+        this.ed807Mapper = ed807Mapper;
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,

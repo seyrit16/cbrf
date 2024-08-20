@@ -11,8 +11,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/accRstrList")
 public class AccountRestrictionListController {
-    @Autowired
-    AccountRestrictionListServiceImpl accountRestrictionListService;
+    private final AccountRestrictionListServiceImpl accountRestrictionListService;
+
+    public AccountRestrictionListController(AccountRestrictionListServiceImpl accountRestrictionListService) {
+        this.accountRestrictionListService = accountRestrictionListService;
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestParam("accRstrListId") Long accRstrListId, @RequestBody Map<String, String> data){
