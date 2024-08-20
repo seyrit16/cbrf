@@ -1,8 +1,11 @@
 package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.config.security.components.CbrfUserDetails;
+import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.BICDirectoryEntryDto;
+import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapperImpl;
+import com.ocode.cbrf.exception.ConflictDataException;
 import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.BICDirectoryEntryServiceImpl;
@@ -39,48 +42,52 @@ public class BICDirectoryEntryController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){
+    public ResultDTO<?> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){
         try{
-            int status = bicDirectoryEntryService.update(edId,data);
-            return switch (status) {
-                case (404) -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                case (409) -> new ResponseEntity<>("A BICDirectoryEntry with such a bic already exists", HttpStatus.CONFLICT);
-                case (500) -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                default -> new ResponseEntity<>(HttpStatus.OK);
-            };
-
-        }catch (Exception e){
+            bicDirectoryEntryService.update(edId,data);
+            return ResultDTO.EMPTY_OK_RESULT;
+        }catch (ConflictDataException cdE){
+            cdE.printStackTrace();
+            return new ResultDTO<>("false",409L,null,"409",cdE.getMessage());
+        }catch (NullPointerException nullE){
+          nullE.printStackTrace();
+          return ResultDTO.NOT_FOUND_RESULT;
+        } catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @DeleteMapping("/delete")
-    public  ResponseEntity<String> delete(@RequestParam(name = "bicId") Long bicId){
+    public ResultDTO<?> delete(@RequestParam(name = "bicId") Long bicId){
         try {
             bicDirectoryEntryService.delete(bicId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResultDTO.EMPTY_OK_RESULT;
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/by_id")
-    public BICDirectoryEntryDto getById(@RequestParam("bicId") Long bicId){
+    public ResultDTO<BICDirectoryEntryDto> getById(@RequestParam("bicId") Long bicId){
         try {
             Optional<BICDirectoryEntry> optionalBICDirectoryEntry =
                     bicDirectoryEntryService.getById(bicId);
 
-            return  optionalBICDirectoryEntry.map(bicDirectoryEntryMapper::toDto).orElse(null);
+            if(optionalBICDirectoryEntry.isPresent())
+                return new ResultDTO<BICDirectoryEntryDto>("true",200L,
+                        optionalBICDirectoryEntry.map(bicDirectoryEntryMapper::toDto).get(),null,null);
+            else
+                return ResultDTO.NOT_FOUND_RESULT;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/by_bic")
-    public BICDirectoryEntryDto getByBic(@RequestParam("edId") Long edId, @RequestParam("bic") Integer bic,
+    public ResultDTO<BICDirectoryEntryDto> getByBic(@RequestParam("edId") Long edId, @RequestParam("bic") Integer bic,
                                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
             CbrfUserDetails userDetails = (CbrfUserDetails)
@@ -88,15 +95,20 @@ public class BICDirectoryEntryController {
 
             Optional<BICDirectoryEntry> optionalBICDirectoryEntry =
                     bicDirectoryEntryService.getByBic(edId,bic, userDetails.isAdmin());
-            return optionalBICDirectoryEntry.map(bicDirectoryEntry -> bicDirectoryEntryMapper.toDto(bicDirectoryEntry)).orElse(null);
+
+            if(optionalBICDirectoryEntry.isPresent())
+                return new ResultDTO<BICDirectoryEntryDto>("true",200L,
+                        optionalBICDirectoryEntry.map(bicDirectoryEntryMapper::toDto).get(),null,null);
+            else
+                return ResultDTO.NOT_FOUND_RESULT;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/by_ed")
-    public List<BICDirectoryEntryDto> getByED807(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestParam("edId") Long edId,
+    public ResultDTO<List<BICDirectoryEntryDto>> getByED807(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestParam("edId") Long edId,
                                                  @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
@@ -108,17 +120,19 @@ public class BICDirectoryEntryController {
                 bdeDto.add(bicDirectoryEntryMapper.toDto(bde));
 
             if(bdeDto.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
-            return bdeDto;
+            ResultDTO<List<BICDirectoryEntryDto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(bdeDto);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.NOT_FOUND_RESULT;
         }
     }
 
     @GetMapping("/search/by_ed_piName_piType")
-    public List<BICDirectoryEntryDto> getByParticipantNameAndParticipantType(@RequestParam("edId")Long edId,
+    public ResultDTO<List<BICDirectoryEntryDto>> getByParticipantNameAndParticipantType(@RequestParam("edId")Long edId,
                                                                              @RequestParam(name = "piName", required = false) String piName,
                                                                              @RequestParam(name = "piType", required = false) String piType,
                                                                              @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
@@ -133,12 +147,14 @@ public class BICDirectoryEntryController {
                 bdeDto.add(bicDirectoryEntryMapper.toDto(bde));
 
             if(bdeDto.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
-            return bdeDto;
+            ResultDTO<List<BICDirectoryEntryDto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(bdeDto);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 }

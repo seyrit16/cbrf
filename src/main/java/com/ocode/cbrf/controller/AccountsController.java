@@ -1,5 +1,6 @@
 package com.ocode.cbrf.controller;
 
+import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.service.impl.AccountsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +19,16 @@ public class AccountsController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestParam("acId") long acId, @RequestBody Map<String,String> data){
+    public ResultDTO<?> update(@RequestParam("acId") long acId, @RequestBody Map<String,String> data){
         try{
             accountsService.update(acId, data);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (NullPointerException e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResultDTO.EMPTY_OK_RESULT;
+        }catch (NullPointerException nullE){
+            nullE.printStackTrace();
+            return ResultDTO.NOT_FOUND_RESULT;
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 }

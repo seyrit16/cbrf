@@ -1,6 +1,7 @@
 package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.config.security.components.CbrfUserDetails;
+import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.dto.mapper.ED807MapperImpl;
 import com.ocode.cbrf.model.ED807;
@@ -40,37 +41,38 @@ public class ED807Controller {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                                         @RequestBody Map<String,String> data){
+    public ResultDTO<?> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+                            @RequestBody Map<String,String> data){
         try{
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
 
-            int status = ed807Service.update(user.getId(), data);
-            return switch (status) {
-                case (404) -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                case (500) -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                default -> new ResponseEntity<>(HttpStatus.OK);
-            };
-        }catch (Exception e){
+            ed807Service.update(user.getId(), data);
+            return ResultDTO.EMPTY_OK_RESULT;
+        }catch (NullPointerException nullE){
+            nullE.printStackTrace();
+            return ResultDTO.NOT_FOUND_RESULT;
+        }
+        catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@RequestParam("edId") Long edId){
+    public ResultDTO<?> delete(@RequestParam("edId") Long edId){
         try{
             ed807Service.delete(edId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResultDTO.EMPTY_OK_RESULT;
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/byUser")
-    public List<ED807Dto> getByUser_Id(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<ED807Dto>> getByUser_Id(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
@@ -83,19 +85,20 @@ public class ED807Controller {
             }
 
             if(edDtoList.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
 
-
-            return edDtoList;
+            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(edDtoList);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/serch/by_title")
-    public List<ED807Dto> getByTitleContaining(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+    public ResultDTO<List<ED807Dto>> getByTitleContaining(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                                @RequestParam("title") String title, @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
@@ -108,17 +111,19 @@ public class ED807Controller {
                 edDtoList.add(ed807Mapper.toDto(ed));
 
             if(edDtoList.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
-            return edDtoList;
+            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(edDtoList);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/between_date")
-    public List<ED807Dto> getBetweenDates(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+    public ResultDTO<List<ED807Dto>> getBetweenDates(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                           @RequestParam("startDate")LocalDate startDate,
                                                @RequestParam("endDate") LocalDate endDate,
                                                @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
@@ -132,17 +137,19 @@ public class ED807Controller {
                 edDtoList.add(ed807Mapper.toDto(ed));
 
             if(edDtoList.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
-            return edDtoList;
+            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(edDtoList);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/between_creationDateTime")
-    public List<ED807Dto> getBetweenDates(@RequestParam("startDateTime") LocalDateTime startDateTime,
+    public ResultDTO<List<ED807Dto>> getBetweenDates(@RequestParam("startDateTime") LocalDateTime startDateTime,
                                           @RequestParam("endDateTime") LocalDateTime endDateTime,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
@@ -156,17 +163,19 @@ public class ED807Controller {
                 edDtoList.add(ed807Mapper.toDto(ed));
 
             if(edDtoList.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
-            return edDtoList;
+            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(edDtoList);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 
     @GetMapping("/search/between_upload_date")
-    public List<ED807Dto> getBetweenUploadDate(@RequestParam("startDate")LocalDate startDate,
+    public ResultDTO<List<ED807Dto>> getBetweenUploadDate(@RequestParam("startDate")LocalDate startDate,
                                           @RequestParam("endDate") LocalDate endDate,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
@@ -179,12 +188,14 @@ public class ED807Controller {
                 edDtoList.add(ed807Mapper.toDto(ed));
 
             if(edDtoList.isEmpty())
-                return null;
+                return ResultDTO.NOT_FOUND_RESULT;
 
-            return edDtoList;
+            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
+            resultDTO.setData(edDtoList);
+            return resultDTO;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 }

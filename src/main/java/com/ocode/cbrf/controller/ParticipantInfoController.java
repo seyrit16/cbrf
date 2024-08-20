@@ -1,5 +1,6 @@
 package com.ocode.cbrf.controller;
 
+import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.service.impl.ParticipantInfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +19,16 @@ public class ParticipantInfoController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestParam("piId") Long piId, @RequestBody Map<String, String> data){
+    public ResultDTO<?> update(@RequestParam("piId") Long piId, @RequestBody Map<String, String> data){
         try{
             participantInfoService.update(piId,data);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResultDTO.EMPTY_OK_RESULT;
         }catch (NullPointerException nullE){
             nullE.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResultDTO.NOT_FOUND_RESULT;
         }catch (Exception e){
             e.printStackTrace();
-            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 }

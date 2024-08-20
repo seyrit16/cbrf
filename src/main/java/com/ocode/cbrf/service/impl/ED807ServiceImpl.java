@@ -20,8 +20,11 @@ import java.util.Optional;
 
 @Service
 public class ED807ServiceImpl implements ED807Service {
-    @Autowired
-    private ED807Repository ed807Repository;
+    private final ED807Repository ed807Repository;
+
+    public ED807ServiceImpl(ED807Repository ed807Repository) {
+        this.ed807Repository = ed807Repository;
+    }
 
     @Override
     @Transactional
@@ -43,12 +46,11 @@ public class ED807ServiceImpl implements ED807Service {
 
     @Override
     @Transactional
-    public int update(Long userId, Map<String, String> data) {
-        try {
+    public void update(Long userId, Map<String, String> data) {
             Long id = Long.valueOf(data.get("id"));
             ED807 ed807 = getById(id).orElse(null);
             if (ed807 == null)
-                return 404;
+                throw new NullPointerException("ed807 is null");
 
             Optional.ofNullable(data.get("title")).ifPresent(title -> {
                 if(getByTitle(userId,title,true).isEmpty())
@@ -71,11 +73,6 @@ public class ED807ServiceImpl implements ED807Service {
             Optional.ofNullable(data.get("directoryVersion")).map(Integer::parseInt).ifPresent(ed807::setDirectoryVersion);
 
             ed807Repository.save(ed807);
-            return 200;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 500;
-        }
     }
 
     @Override

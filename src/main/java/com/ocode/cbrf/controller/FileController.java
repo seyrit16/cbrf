@@ -1,5 +1,6 @@
 package com.ocode.cbrf.controller;
 
+import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.model.user.User;
@@ -24,41 +25,24 @@ import java.util.Set;
 public class FileController {
     private final FileServiceImpl fileService;
     private final ED807ServiceImpl ed807Service;
-    private final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
-    private final ParticipantInfoServiceImpl participantInfoService;
-    private final AccountsServiceImpl accountsService;
-    private final RestrictionListServiceImpl restrictionListService;
-    private final AccountRestrictionListServiceImpl accountRestrictionListService;
-    private final SWBICSServiceImpl swbicsService;
     private final DtoServiceImpl dtoService;
     private final UserServiceImpl userService;
     private final JwtService jwtService;
 
     @Autowired
-    public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service,
-                          BICDirectoryEntryServiceImpl bicDirectoryEntryService,
-                          ParticipantInfoServiceImpl participantInfoService, AccountsServiceImpl accountsService,
-                          RestrictionListServiceImpl restrictionListService,
-                          AccountRestrictionListServiceImpl accountRestrictionListService,
-                          SWBICSServiceImpl swbicsService, DtoServiceImpl dtoService, UserServiceImpl userService,
-                          JwtService jwtService) {
+    public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service, DtoServiceImpl dtoService,
+                          UserServiceImpl userService, JwtService jwtService) {
         this.fileService = fileService;
         this.ed807Service = ed807Service;
-        this.bicDirectoryEntryService = bicDirectoryEntryService;
-        this.participantInfoService = participantInfoService;
-        this.accountsService = accountsService;
-        this.restrictionListService = restrictionListService;
-        this.accountRestrictionListService = accountRestrictionListService;
-        this.swbicsService = swbicsService;
         this.dtoService = dtoService;
         this.userService = userService;
         this.jwtService = jwtService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                                             @RequestParam("title") String title,
-                                             @RequestBody MultipartFile file) {
+    public ResultDTO<?> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+                                @RequestParam("title") String title,
+                                @RequestBody MultipartFile file) {
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
 
@@ -95,10 +79,10 @@ public class FileController {
             user.setEd807s(ed807Set);
             userService.update(user);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResultDTO.EMPTY_OK_RESULT;
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResultDTO.INTERNAL_SERVER_RESULT;
         }
     }
 }
