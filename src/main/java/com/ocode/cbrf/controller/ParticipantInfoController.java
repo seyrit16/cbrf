@@ -14,6 +14,7 @@ import java.util.Map;
 public class ParticipantInfoController {
     private final ParticipantInfoServiceImpl participantInfoService;
 
+    @Autowired
     public ParticipantInfoController(ParticipantInfoServiceImpl participantInfoService) {
         this.participantInfoService = participantInfoService;
     }

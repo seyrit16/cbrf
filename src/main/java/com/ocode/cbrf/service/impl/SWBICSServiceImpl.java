@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class SWBICSServiceImpl implements SWBICSService {
     private final SWBICSRepository swbicsRepository;
 
+    @Autowired
     public SWBICSServiceImpl(SWBICSRepository swbicsRepository) {
         this.swbicsRepository = swbicsRepository;
     }

@@ -19,6 +19,7 @@ import java.util.Optional;
 public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
     private final BICDirectoryEntryRepository bicDirectoryEntryRepository;
 
+    @Autowired
     public BICDirectoryEntryServiceImpl(BICDirectoryEntryRepository bicDirectoryEntryRepository) {
         this.bicDirectoryEntryRepository = bicDirectoryEntryRepository;
     }

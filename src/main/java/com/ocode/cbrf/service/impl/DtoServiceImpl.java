@@ -4,6 +4,7 @@ import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.service.mapper.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.service.DtoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class DtoServiceImpl implements DtoService {
     private final AccountsRestrictionListMapperImpl accountsRestrictionListMapper;
     private final SWBICSMapperImpl swbicsMapper;
 
+    @Autowired
     public DtoServiceImpl(ED807MapperImpl ed807Mapper, BICDirectoryEntryMapperImpl bicDirectoryEntryMapper, ParticipantInfoMapperImpl participantInfoMapper, RestrictionListMapperImpl restrictionListMapper, AccountsMapperImpl accountsMapper, AccountsRestrictionListMapperImpl accountsRestrictionListMapper, SWBICSMapperImpl swbicsMapper) {
         this.ed807Mapper = ed807Mapper;
         this.bicDirectoryEntryMapper = bicDirectoryEntryMapper;

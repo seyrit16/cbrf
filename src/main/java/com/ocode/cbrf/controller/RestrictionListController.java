@@ -14,6 +14,7 @@ import java.util.Map;
 public class RestrictionListController {
     private final RestrictionListServiceImpl restrictionListService;
 
+    @Autowired
     public RestrictionListController(RestrictionListServiceImpl restrictionListService) {
         this.restrictionListService = restrictionListService;
     }

@@ -14,6 +14,7 @@ import java.util.Map;
 public class AccountsController {
     private final AccountsServiceImpl accountsService;
 
+    @Autowired
     public AccountsController(AccountsServiceImpl accountsService) {
         this.accountsService = accountsService;
     }

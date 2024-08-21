@@ -33,6 +33,7 @@ public class ED807Controller {
     private final JwtService jwtService;
     private final UserServiceImpl userService;
 
+    @Autowired
     public ED807Controller(ED807ServiceImpl ed807Service, ED807MapperImpl ed807Mapper, JwtService jwtService, UserServiceImpl userService) {
         this.ed807Service = ed807Service;
         this.ed807Mapper = ed807Mapper;

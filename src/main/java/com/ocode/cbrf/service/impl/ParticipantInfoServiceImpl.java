@@ -17,6 +17,7 @@ import java.util.Optional;
 public class ParticipantInfoServiceImpl implements ParticipantInfoService {
     private final ParticipantInfoRepository participantInfoRepository;
 
+    @Autowired
     public ParticipantInfoServiceImpl(ParticipantInfoRepository participantInfoRepository) {
         this.participantInfoRepository = participantInfoRepository;
     }

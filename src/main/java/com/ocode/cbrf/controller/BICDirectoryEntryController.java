@@ -34,6 +34,7 @@ public class BICDirectoryEntryController {
     private final JwtService jwtService;
     private final UserServiceImpl userService;
 
+    @Autowired
     public BICDirectoryEntryController(BICDirectoryEntryMapperImpl bicDirectoryEntryMapper, BICDirectoryEntryServiceImpl bicDirectoryEntryService, JwtService jwtService, UserServiceImpl userService) {
         this.bicDirectoryEntryMapper = bicDirectoryEntryMapper;
         this.bicDirectoryEntryService = bicDirectoryEntryService;

@@ -17,6 +17,7 @@ import java.util.Optional;
 public class AccountRestrictionListServiceImpl implements AccountRestrictionListService {
     private final AccountRestrictionListRepository accountRestrictionListRepository;
 
+    @Autowired
     public AccountRestrictionListServiceImpl(AccountRestrictionListRepository accountRestrictionListRepository) {
         this.accountRestrictionListRepository = accountRestrictionListRepository;
     }

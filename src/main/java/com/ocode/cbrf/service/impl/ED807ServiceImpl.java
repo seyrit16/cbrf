@@ -22,6 +22,7 @@ import java.util.Optional;
 public class ED807ServiceImpl implements ED807Service {
     private final ED807Repository ed807Repository;
 
+    @Autowired
     public ED807ServiceImpl(ED807Repository ed807Repository) {
         this.ed807Repository = ed807Repository;
     }
