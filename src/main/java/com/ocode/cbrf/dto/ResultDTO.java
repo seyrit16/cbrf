@@ -1,5 +1,6 @@
 package com.ocode.cbrf.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,21 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "HTTP response", examples = {"SUCCESS", "FAILURE", "EMPTY_OK", "NOT_FOUND", "INTERNAL_SERVER"})
 public class ResultDTO<T> {
+    @Schema(description = "Result", examples = {"true", "false"})
     private String success;
+
+    @Schema(description = "Status", examples = {"0", "200", "404", "500"})
     private Long status;
+
+    @Schema(description = "Data", defaultValue = "null")
     protected T data;
+
+    @Schema(description = "Error code", examples = {"404", "500"}, defaultValue = "null")
     private String errorCode;
+
+    @Schema(description = "Error message", defaultValue = "null")
     private String errorMessage;
 
     public static ResultDTO SUCCESS_RESULT = new ResultDTO("true",0L,null, null, null);
