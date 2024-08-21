@@ -3,7 +3,6 @@ package com.ocode.cbrf.controller;
 import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.BICDirectoryEntryDto;
-import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.service.mapper.impl.BICDirectoryEntryMapperImpl;
 import com.ocode.cbrf.exception.ConflictDataException;
 import com.ocode.cbrf.model.BICDirectoryEntry;
@@ -20,8 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
