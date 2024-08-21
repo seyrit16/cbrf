@@ -11,6 +11,8 @@ import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.BICDirectoryEntryServiceImpl;
 import com.ocode.cbrf.service.impl.UserServiceImpl;
 import com.ocode.cbrf.service.web.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bic_directory_entry/")
+@Tag(name = "BIC directory entry controller")
 public class BICDirectoryEntryController {
     private final BICDirectoryEntryMapperImpl bicDirectoryEntryMapper;
     private final BICDirectoryEntryServiceImpl bicDirectoryEntryService;
@@ -43,6 +46,7 @@ public class BICDirectoryEntryController {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "Update BIC directory entries by ED807 id")
     public ResultDTO<?> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){
         try{
             bicDirectoryEntryService.update(edId,data);
@@ -60,6 +64,7 @@ public class BICDirectoryEntryController {
     }
 
     @DeleteMapping("/delete")
+    @Operation(summary = "Delete BIC directory entry by id")
     public ResultDTO<?> delete(@RequestParam(name = "bicId") Long bicId){
         try {
             bicDirectoryEntryService.delete(bicId);
@@ -71,6 +76,7 @@ public class BICDirectoryEntryController {
     }
 
     @GetMapping("/search/by_id")
+    @Operation(summary = "Get BIC directory entry by id")
     public ResultDTO<BICDirectoryEntryDto> getById(@RequestParam("bicId") Long bicId){
         try {
             Optional<BICDirectoryEntry> optionalBICDirectoryEntry =
@@ -88,6 +94,7 @@ public class BICDirectoryEntryController {
     }
 
     @GetMapping("/search/by_bic")
+    @Operation(summary = "Get BIC directory entry by BIC id and ED807 id")
     public ResultDTO<BICDirectoryEntryDto> getByBic(@RequestParam("edId") Long edId, @RequestParam("bic") Integer bic,
                                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
@@ -109,6 +116,7 @@ public class BICDirectoryEntryController {
     }
 
     @GetMapping("/search/by_ed")
+    @Operation(summary = "Get all BIC directory entries by ED807 id")
     public ResultDTO<List<BICDirectoryEntryDto>> getByED807(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestParam("edId") Long edId,
                                                  @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
@@ -133,6 +141,7 @@ public class BICDirectoryEntryController {
     }
 
     @GetMapping("/search/by_ed_piName_piType")
+    @Operation(summary = "Get all BIC directory entries by participant info name and participant info type")
     public ResultDTO<List<BICDirectoryEntryDto>> getByParticipantNameAndParticipantType(@RequestParam("edId")Long edId,
                                                                              @RequestParam(name = "piName", required = false) String piName,
                                                                              @RequestParam(name = "piType", required = false) String piType,

@@ -7,6 +7,8 @@ import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.*;
 import com.ocode.cbrf.service.mapper.impl.ED807MapperImpl;
 import com.ocode.cbrf.service.web.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/api/file")
+@Tag(name = "File controller")
 public class FileController {
     private final FileServiceImpl fileService;
     private final ED807ServiceImpl ed807Service;
@@ -39,6 +42,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
+    @Operation(summary = "Upload file with title name")
     public ResultDTO<?> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                 @RequestParam("title") String title,
                                 @RequestBody MultipartFile file) {

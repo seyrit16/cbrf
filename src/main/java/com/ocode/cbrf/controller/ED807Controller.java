@@ -9,6 +9,8 @@ import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.ED807ServiceImpl;
 import com.ocode.cbrf.service.impl.UserServiceImpl;
 import com.ocode.cbrf.service.web.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ed")
+@Tag(name = "ED807 controller")
 public class ED807Controller {
     private final ED807ServiceImpl ed807Service;
     private final ED807MapperImpl ed807Mapper;
@@ -42,6 +45,7 @@ public class ED807Controller {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "Update ED807 by user id")
     public ResultDTO<?> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                             @RequestBody Map<String,String> data){
         try{
@@ -61,6 +65,7 @@ public class ED807Controller {
     }
 
     @DeleteMapping("/delete")
+    @Operation(summary = "Delete ED807 by id")
     public ResultDTO<?> delete(@RequestParam("edId") Long edId){
         try{
             ed807Service.delete(edId);
@@ -72,6 +77,7 @@ public class ED807Controller {
     }
 
     @GetMapping("/search/byUser")
+    @Operation(summary = "Get all ED807 by user id")
     public ResultDTO<List<ED807Dto>> getByUser_Id(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
@@ -99,6 +105,7 @@ public class ED807Controller {
     }
 
     @GetMapping("/serch/by_title")
+    @Operation(summary = "Get ED807 by title")
     public ResultDTO<List<ED807Dto>> getByTitleContaining(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                                @RequestParam("title") String title, @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
@@ -124,6 +131,7 @@ public class ED807Controller {
     }
 
     @GetMapping("/search/between_date")
+    @Operation(summary = "Get all ED807 between dates")
     public ResultDTO<List<ED807Dto>> getBetweenDates(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                           @RequestParam("startDate")LocalDate startDate,
                                                @RequestParam("endDate") LocalDate endDate,
@@ -150,6 +158,7 @@ public class ED807Controller {
     }
 
     @GetMapping("/search/between_creationDateTime")
+    @Operation(summary = "Get all ED807 between creation dates")
     public ResultDTO<List<ED807Dto>> getBetweenDates(@RequestParam("startDateTime") LocalDateTime startDateTime,
                                           @RequestParam("endDateTime") LocalDateTime endDateTime,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
@@ -176,6 +185,7 @@ public class ED807Controller {
     }
 
     @GetMapping("/search/between_upload_date")
+    @Operation(summary = "Get all ED807 between upload dates")
     public ResultDTO<List<ED807Dto>> getBetweenUploadDate(@RequestParam("startDate")LocalDate startDate,
                                           @RequestParam("endDate") LocalDate endDate,
                                           @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
