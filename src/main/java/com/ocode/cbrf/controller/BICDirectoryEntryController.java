@@ -12,6 +12,8 @@ import com.ocode.cbrf.service.impl.BICDirectoryEntryServiceImpl;
 import com.ocode.cbrf.service.impl.UserServiceImpl;
 import com.ocode.cbrf.service.web.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +49,14 @@ public class BICDirectoryEntryController {
 
     @PutMapping("/update")
     @Operation(summary = "Update BIC directory entries by ED807 id")
-    public ResultDTO<?> update(@RequestParam("edId") Long edId, @RequestBody Map<String,String> data){
+    public ResultDTO<?> update(
+            @Parameter(description = "ED807 id to BIC directory entry update")
+            @RequestParam("edId") Long edId,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Data to update",
+                    content = @Content(mediaType = "application/json"))
+            @RequestBody Map<String,String> data){
         try{
             bicDirectoryEntryService.update(edId,data);
             return ResultDTO.EMPTY_OK_RESULT;
@@ -65,7 +74,9 @@ public class BICDirectoryEntryController {
 
     @DeleteMapping("/delete")
     @Operation(summary = "Delete BIC directory entry by id")
-    public ResultDTO<?> delete(@RequestParam(name = "bicId") Long bicId){
+    public ResultDTO<?> delete(
+            @Parameter(description = "BIC directory entry id to delete")
+            @RequestParam(name = "bicId") Long bicId){
         try {
             bicDirectoryEntryService.delete(bicId);
             return ResultDTO.EMPTY_OK_RESULT;
@@ -77,7 +88,9 @@ public class BICDirectoryEntryController {
 
     @GetMapping("/search/by_id")
     @Operation(summary = "Get BIC directory entry by id")
-    public ResultDTO<BICDirectoryEntryDto> getById(@RequestParam("bicId") Long bicId){
+    public ResultDTO<BICDirectoryEntryDto> getById(
+            @Parameter(description = "BIC directory entry id to search")
+            @RequestParam("bicId") Long bicId){
         try {
             Optional<BICDirectoryEntry> optionalBICDirectoryEntry =
                     bicDirectoryEntryService.getById(bicId);
@@ -95,8 +108,15 @@ public class BICDirectoryEntryController {
 
     @GetMapping("/search/by_bic")
     @Operation(summary = "Get BIC directory entry by BIC id and ED807 id")
-    public ResultDTO<BICDirectoryEntryDto> getByBic(@RequestParam("edId") Long edId, @RequestParam("bic") Integer bic,
-                                         @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<BICDirectoryEntryDto> getByBic(
+            @Parameter(description = "ED807 id to BIC directory entry search")
+            @RequestParam("edId") Long edId,
+
+            @Parameter(description = "BIC directory entry number to search")
+            @RequestParam("bic") Integer bic,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
             CbrfUserDetails userDetails = (CbrfUserDetails)
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -117,8 +137,15 @@ public class BICDirectoryEntryController {
 
     @GetMapping("/search/by_ed")
     @Operation(summary = "Get all BIC directory entries by ED807 id")
-    public ResultDTO<List<BICDirectoryEntryDto>> getByED807(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader, @RequestParam("edId") Long edId,
-                                                 @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<BICDirectoryEntryDto>> getByED807(
+            @Parameter(description = "JWT token")
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+
+            @Parameter(description = "ED807 id to BIC directory entry search")
+            @RequestParam("edId") Long edId,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
@@ -142,10 +169,18 @@ public class BICDirectoryEntryController {
 
     @GetMapping("/search/by_ed_piName_piType")
     @Operation(summary = "Get all BIC directory entries by participant info name and participant info type")
-    public ResultDTO<List<BICDirectoryEntryDto>> getByParticipantNameAndParticipantType(@RequestParam("edId")Long edId,
-                                                                             @RequestParam(name = "piName", required = false) String piName,
-                                                                             @RequestParam(name = "piType", required = false) String piType,
-                                                                             @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<BICDirectoryEntryDto>> getByParticipantNameAndParticipantType(
+            @Parameter(description = "ED807 id to BIC directory entry search")
+            @RequestParam("edId")Long edId,
+
+            @Parameter(description = "Participant info name to BIC directory entry search")
+            @RequestParam(name = "piName", required = false) String piName,
+
+            @Parameter(description = "Participant info type to BIC directory entry search")
+            @RequestParam(name = "piType", required = false) String piType,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try{
             CbrfUserDetails userDetails = (CbrfUserDetails)
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();

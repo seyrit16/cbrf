@@ -8,6 +8,8 @@ import com.ocode.cbrf.service.impl.*;
 import com.ocode.cbrf.service.mapper.impl.ED807MapperImpl;
 import com.ocode.cbrf.service.web.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -43,9 +45,17 @@ public class FileController {
 
     @PostMapping("/upload")
     @Operation(summary = "Upload file with title name")
-    public ResultDTO<?> uploadFile(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                                @RequestParam("title") String title,
-                                @RequestBody MultipartFile file) {
+    public ResultDTO<?> uploadFile(
+            @Parameter(description = "JWT token")
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+
+            @Parameter(description = "Title name for file")
+            @RequestParam("title") String title,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "File to upload",
+                    content = @Content(mediaType = "application/json"))
+            @RequestBody MultipartFile file) {
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
 

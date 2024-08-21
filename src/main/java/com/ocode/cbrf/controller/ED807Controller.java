@@ -10,6 +10,8 @@ import com.ocode.cbrf.service.impl.ED807ServiceImpl;
 import com.ocode.cbrf.service.impl.UserServiceImpl;
 import com.ocode.cbrf.service.web.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,8 +48,14 @@ public class ED807Controller {
 
     @PutMapping("/update")
     @Operation(summary = "Update ED807 by user id")
-    public ResultDTO<?> update(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                            @RequestBody Map<String,String> data){
+    public ResultDTO<?> update(
+            @Parameter(description = "JWT token")
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Data to update",
+                    content = @Content(mediaType = "application/json"))
+            @RequestBody Map<String,String> data){
         try{
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
@@ -66,7 +74,9 @@ public class ED807Controller {
 
     @DeleteMapping("/delete")
     @Operation(summary = "Delete ED807 by id")
-    public ResultDTO<?> delete(@RequestParam("edId") Long edId){
+    public ResultDTO<?> delete(
+            @Parameter(description = "ED807 id to delete")
+            @RequestParam("edId") Long edId){
         try{
             ed807Service.delete(edId);
             return ResultDTO.EMPTY_OK_RESULT;
@@ -78,8 +88,12 @@ public class ED807Controller {
 
     @GetMapping("/search/byUser")
     @Operation(summary = "Get all ED807 by user id")
-    public ResultDTO<List<ED807Dto>> getByUser_Id(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<ED807Dto>> getByUser_Id(
+            @Parameter(description = "JWT token")
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
@@ -106,8 +120,15 @@ public class ED807Controller {
 
     @GetMapping("/serch/by_title")
     @Operation(summary = "Get ED807 by title")
-    public ResultDTO<List<ED807Dto>> getByTitleContaining(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                                               @RequestParam("title") String title, @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<ED807Dto>> getByTitleContaining(
+            @Parameter(description = "JWT token")
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+
+            @Parameter(description = "ED807 title to search")
+            @RequestParam("title") String title,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
@@ -132,10 +153,18 @@ public class ED807Controller {
 
     @GetMapping("/search/between_date")
     @Operation(summary = "Get all ED807 between dates")
-    public ResultDTO<List<ED807Dto>> getBetweenDates(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                                          @RequestParam("startDate")LocalDate startDate,
-                                               @RequestParam("endDate") LocalDate endDate,
-                                               @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<ED807Dto>> getBetweenDates(
+            @Parameter(description = "JWT token")
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+
+            @Parameter(description = "Start date to search")
+            @RequestParam("startDate")LocalDate startDate,
+
+            @Parameter(description = "End date to search")
+            @RequestParam("endDate") LocalDate endDate,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
             User user= userService.getUser(username).get();
@@ -159,9 +188,15 @@ public class ED807Controller {
 
     @GetMapping("/search/between_creationDateTime")
     @Operation(summary = "Get all ED807 between creation dates")
-    public ResultDTO<List<ED807Dto>> getBetweenDates(@RequestParam("startDateTime") LocalDateTime startDateTime,
-                                          @RequestParam("endDateTime") LocalDateTime endDateTime,
-                                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<ED807Dto>> getBetweenDates(
+            @Parameter(description = "Start date to search")
+            @RequestParam("startDateTime") LocalDateTime startDateTime,
+
+            @Parameter(description = "End date to search")
+            @RequestParam("endDateTime") LocalDateTime endDateTime,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             CbrfUserDetails userDetails = (CbrfUserDetails)
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -186,9 +221,15 @@ public class ED807Controller {
 
     @GetMapping("/search/between_upload_date")
     @Operation(summary = "Get all ED807 between upload dates")
-    public ResultDTO<List<ED807Dto>> getBetweenUploadDate(@RequestParam("startDate")LocalDate startDate,
-                                          @RequestParam("endDate") LocalDate endDate,
-                                          @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
+    public ResultDTO<List<ED807Dto>> getBetweenUploadDate(
+            @Parameter(description = "Start date to search")
+            @RequestParam("startDate")LocalDate startDate,
+
+            @Parameter(description = "End date to search")
+            @RequestParam("endDate") LocalDate endDate,
+
+            @Parameter(description = "Pagination")
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
         try {
             CbrfUserDetails userDetails = (CbrfUserDetails)
                     SecurityContextHolder.getContext().getAuthentication().getPrincipal();
