@@ -5,11 +5,10 @@ import com.ocode.cbrf.dto.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.*;
+import com.ocode.cbrf.service.mapper.impl.ED807MapperImpl;
 import com.ocode.cbrf.service.web.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,18 +24,18 @@ import java.util.Set;
 public class FileController {
     private final FileServiceImpl fileService;
     private final ED807ServiceImpl ed807Service;
-    private final DtoServiceImpl dtoService;
+    private final ED807MapperImpl ed807Mapper;
     private final UserServiceImpl userService;
     private final JwtService jwtService;
 
     @Autowired
-    public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service, DtoServiceImpl dtoService,
-                          UserServiceImpl userService, JwtService jwtService) {
+    public FileController(FileServiceImpl fileService, ED807ServiceImpl ed807Service,
+                          UserServiceImpl userService, JwtService jwtService,ED807MapperImpl ed807Mapper) {
         this.fileService = fileService;
         this.ed807Service = ed807Service;
-        this.dtoService = dtoService;
         this.userService = userService;
         this.jwtService = jwtService;
+        this.ed807Mapper = ed807Mapper;
     }
 
     @PostMapping("/upload")
@@ -47,9 +46,9 @@ public class FileController {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
 
             ED807Dto ed807Dto = fileService.unmarshalXml(fileService.convertMultipartFileToFile(file));
-            ED807 ed807 = dtoService.toEntities(ed807Dto);
+            ED807 ed807 = ed807Mapper.toEntity(ed807Dto);
 
-
+            // Обратная связь
             for (BICDirectoryEntry bde: ed807.getBicDirectoryEntries()){
                 List<SWBICS> swbics = bde.getSwbicsList();
                 Optional.ofNullable(swbics).ifPresent(s->s.parallelStream().forEach(swbics1 -> swbics1.setBicDirectoryEntry(bde)));
