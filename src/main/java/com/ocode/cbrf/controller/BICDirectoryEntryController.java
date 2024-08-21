@@ -4,7 +4,7 @@ import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.BICDirectoryEntryDto;
 import com.ocode.cbrf.dto.impl.ED807Dto;
-import com.ocode.cbrf.dto.mapper.BICDirectoryEntryMapperImpl;
+import com.ocode.cbrf.service.mapper.impl.BICDirectoryEntryMapperImpl;
 import com.ocode.cbrf.exception.ConflictDataException;
 import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.model.user.User;

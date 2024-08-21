@@ -1,10 +1,9 @@
 package com.ocode.cbrf.service.impl;
 
 import com.ocode.cbrf.dto.impl.*;
-import com.ocode.cbrf.dto.mapper.*;
+import com.ocode.cbrf.service.mapper.impl.*;
 import com.ocode.cbrf.model.*;
 import com.ocode.cbrf.service.DtoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +11,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class DtoServiceImpl implements DtoService {
-    private final ED807Mapper ed807Mapper;
-    private final BICDirectoryEntryMapper bicDirectoryEntryMapper;
-    private final ParticipantInfoMapper participantInfoMapper;
-    private final RestrictionListMapper restrictionListMapper;
-    private final AccountsMapper accountsMapper;
-    private final AccountsRestrictionListMapper accountsRestrictionListMapper;
-    private final SWBICSMapper swbicsMapper;
+    private final ED807MapperImpl ed807Mapper;
+    private final BICDirectoryEntryMapperImpl bicDirectoryEntryMapper;
+    private final ParticipantInfoMapperImpl participantInfoMapper;
+    private final RestrictionListMapperImpl restrictionListMapper;
+    private final AccountsMapperImpl accountsMapper;
+    private final AccountsRestrictionListMapperImpl accountsRestrictionListMapper;
+    private final SWBICSMapperImpl swbicsMapper;
 
-    public DtoServiceImpl(ED807Mapper ed807Mapper, BICDirectoryEntryMapper bicDirectoryEntryMapper, ParticipantInfoMapper participantInfoMapper, RestrictionListMapper restrictionListMapper, AccountsMapper accountsMapper, AccountsRestrictionListMapper accountsRestrictionListMapper, SWBICSMapper swbicsMapper) {
+    public DtoServiceImpl(ED807MapperImpl ed807Mapper, BICDirectoryEntryMapperImpl bicDirectoryEntryMapper, ParticipantInfoMapperImpl participantInfoMapper, RestrictionListMapperImpl restrictionListMapper, AccountsMapperImpl accountsMapper, AccountsRestrictionListMapperImpl accountsRestrictionListMapper, SWBICSMapperImpl swbicsMapper) {
         this.ed807Mapper = ed807Mapper;
         this.bicDirectoryEntryMapper = bicDirectoryEntryMapper;
         this.participantInfoMapper = participantInfoMapper;

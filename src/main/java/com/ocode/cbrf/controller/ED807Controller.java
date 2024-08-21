@@ -3,7 +3,7 @@ package com.ocode.cbrf.controller;
 import com.ocode.cbrf.config.security.components.CbrfUserDetails;
 import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.ED807Dto;
-import com.ocode.cbrf.dto.mapper.ED807MapperImpl;
+import com.ocode.cbrf.service.mapper.impl.ED807MapperImpl;
 import com.ocode.cbrf.model.ED807;
 import com.ocode.cbrf.model.user.User;
 import com.ocode.cbrf.service.impl.ED807ServiceImpl;
