@@ -5,6 +5,7 @@ import com.ocode.cbrf.service.impl.RestrictionListServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,16 @@ public class RestrictionListController {
 
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Data to update",
-                    content = @Content(mediaType = "application/json"))
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "Example",
+                                    description = "json may not contain all fields",
+                                    value = """
+                                            {
+                                            "restriction": "string",
+                                            "date": "string"
+                                            }
+                                            """)))
             @RequestBody Map<String, String> data){
         try{
             restrictionListService.update(rstrId, data);
