@@ -116,7 +116,7 @@ public class ED807Controller {
         }
     }
 
-    @GetMapping("/serch/by_title")
+    @GetMapping("/search/by_title")
     @Operation(summary = "Get ED807 by title")
     public ResultDTO<List<ED807Dto>> getByTitleContaining(
             @Parameter(description = "JWT token")
