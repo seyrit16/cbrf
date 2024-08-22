@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +44,7 @@ public class FileController {
         this.ed807Mapper = ed807Mapper;
     }
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "Upload file with title name")
     public ResultDTO<?> uploadFile(
             @Parameter(description = "JWT token")
@@ -52,9 +53,10 @@ public class FileController {
             @Parameter(description = "Title name for file")
             @RequestParam("title") String title,
 
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            @Parameter(
                     description = "File to upload",
-                    content = @Content(mediaType = "application/json"))
+                    content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+            )
             @RequestBody MultipartFile file) {
         try {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
