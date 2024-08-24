@@ -1,5 +1,6 @@
 package com.ocode.cbrf.service.impl;
 
+import com.ocode.cbrf.exception.ResourceNotFoundException;
 import com.ocode.cbrf.invariants.AccountStatus;
 import com.ocode.cbrf.invariants.RegulationAccountType;
 import com.ocode.cbrf.model.Accounts;
@@ -33,8 +34,8 @@ public class AccountsServiceImpl implements AccountsService {
     @Transactional
     public void update(Long id, Map<String, String> data) {
         Accounts accounts = getById(id).orElse(null);
-        if(accounts == null)
-            throw new NullPointerException("accounts is null");
+        if (accounts == null)
+            throw new ResourceNotFoundException("accounts is null");
 
         Optional.ofNullable(data.get("account")).ifPresent(accounts::setAccount);
         Optional.ofNullable(data.get("regulationAccountType"))
@@ -55,6 +56,8 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public Optional<Accounts> getById(Long id) {
+        Optional<Accounts> opAccounts = accountsRepository.findById(id);
+        if (opAccounts.isEmpty()) throw new ResourceNotFoundException("accounts by id not found");
         return accountsRepository.findById(id);
     }
 }

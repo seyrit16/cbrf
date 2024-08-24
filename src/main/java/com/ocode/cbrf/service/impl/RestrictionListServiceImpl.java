@@ -1,5 +1,6 @@
 package com.ocode.cbrf.service.impl;
 
+import com.ocode.cbrf.exception.ResourceNotFoundException;
 import com.ocode.cbrf.invariants.Rstr;
 import com.ocode.cbrf.model.RestrictionList;
 import com.ocode.cbrf.repository.RestrictionListRepository;
@@ -32,7 +33,7 @@ public class RestrictionListServiceImpl implements RestrictionListService {
     @Transactional
     public void update(Long id, Map<String, String> data) {
         RestrictionList restrictionList = getById(id).orElse(null);
-        if(restrictionList == null) throw new NullPointerException("restriction list is null");
+        if(restrictionList == null) throw new ResourceNotFoundException("restriction list is null");
 
         Optional.ofNullable(data.get("restriction")).map(Rstr::valueOf).ifPresent(restrictionList::setRestriction);
         Optional.ofNullable(data.get("date"))
@@ -44,6 +45,8 @@ public class RestrictionListServiceImpl implements RestrictionListService {
 
     @Override
     public Optional<RestrictionList> getById(Long id) {
-        return restrictionListRepository.findById(id);
+        Optional<RestrictionList> rl = restrictionListRepository.findById(id);
+        if(rl.isEmpty()) throw new ResourceNotFoundException("restriction list by id not found");
+        return rl;
     }
 }

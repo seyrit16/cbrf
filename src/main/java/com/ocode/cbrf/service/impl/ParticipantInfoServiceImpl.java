@@ -1,5 +1,6 @@
 package com.ocode.cbrf.service.impl;
 
+import com.ocode.cbrf.exception.ResourceNotFoundException;
 import com.ocode.cbrf.invariants.ParticipantStatus;
 import com.ocode.cbrf.model.ParticipantInfo;
 import com.ocode.cbrf.repository.ParticipantInfoRepository;
@@ -39,7 +40,7 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
     public void update(Long id, Map<String, String> data) {
         ParticipantInfo participantInfo = getById(id).orElse(null);
         if(participantInfo == null)
-            throw new NullPointerException("participant info is null");
+            throw new ResourceNotFoundException("participant info is null");
 
         Optional.ofNullable(data.get("name")).ifPresent(participantInfo::setName);
         Optional.ofNullable(data.get("englishName")).ifPresent(participantInfo::setEnglishName);
@@ -68,6 +69,8 @@ public class ParticipantInfoServiceImpl implements ParticipantInfoService {
 
     @Override
     public Optional<ParticipantInfo> getById(Long id) {
-        return participantInfoRepository.findById(id);
+        Optional<ParticipantInfo> opPI = participantInfoRepository.findById(id);
+        if(opPI.isEmpty()) throw new ResourceNotFoundException("participant info by id not found");
+        return opPI;
     }
 }

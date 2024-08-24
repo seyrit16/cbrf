@@ -1,6 +1,5 @@
 package com.ocode.cbrf.controller;
 
-import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.service.impl.RestrictionListServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,7 +24,7 @@ public class RestrictionListController {
 
     @PutMapping("/update")
     @Operation(summary = "Update restriction list by id")
-    public ResultDTO<?> update(
+    public void update(
             @Parameter(description = "Restriction list id")
             @RequestParam("rstrId") Long rstrId,
 
@@ -42,15 +41,6 @@ public class RestrictionListController {
                                             }
                                             """)))
             @RequestBody Map<String, String> data){
-        try{
             restrictionListService.update(rstrId, data);
-            return ResultDTO.EMPTY_OK_RESULT;
-        }catch (NullPointerException nullE){
-            nullE.printStackTrace();
-            return ResultDTO.NOT_FOUND_RESULT;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
     }
 }

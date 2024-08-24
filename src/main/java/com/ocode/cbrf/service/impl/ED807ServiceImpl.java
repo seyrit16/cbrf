@@ -1,5 +1,6 @@
 package com.ocode.cbrf.service.impl;
 
+import com.ocode.cbrf.exception.ResourceNotFoundException;
 import com.ocode.cbrf.invariants.CreationReason;
 import com.ocode.cbrf.invariants.InfoTypeCode;
 import com.ocode.cbrf.model.ED807;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,11 +53,14 @@ public class ED807ServiceImpl implements ED807Service {
             Long id = Long.valueOf(data.get("id"));
             ED807 ed807 = getById(id).orElse(null);
             if (ed807 == null)
-                throw new NullPointerException("ed807 is null");
+                throw new ResourceNotFoundException("there ed is no such");
 
             Optional.ofNullable(data.get("title")).ifPresent(title -> {
-                if(getByTitle(userId,title,true).isEmpty())
+                try{
+                    getByTitle(userId,title,true);
+                }catch (ResourceNotFoundException ex){
                     ed807.setTitle(title);
+                }
             });
             Optional.ofNullable(data.get("number")).map(Integer::parseInt).ifPresent(ed807::setNumber);
             Optional.ofNullable(data.get("date"))
@@ -78,37 +83,51 @@ public class ED807ServiceImpl implements ED807Service {
 
     @Override
     public Optional<ED807> getById(Long id) {
-        return ed807Repository.findById(id);
+        Optional<ED807> opEd=ed807Repository.findById(id);
+        if(opEd.isEmpty()) throw new ResourceNotFoundException("ed is not found");
+        return opEd;
     }
 
     @Override
     public Page<ED807> getByUser_Id(Long userId, Boolean showDeleted, Pageable pageable) {
-        return ed807Repository.findAll(userId,showDeleted, pageable);
+        Page<ED807> edList = ed807Repository.findAll(userId,showDeleted, pageable);
+        if(edList.isEmpty()) throw new ResourceNotFoundException("ed for user not found");
+        return edList;
     }
 
     @Override
     public Page<ED807> getByTitleContaining(Long userId, String title, Boolean showDeleted, Pageable pageable) {
-        return ed807Repository.findByTitleContaining(userId, title,showDeleted,  pageable);
+        Page<ED807> edList = ed807Repository.findByTitleContaining(userId, title,showDeleted,  pageable);
+        if(edList.isEmpty()) throw new ResourceNotFoundException("ed ByTitleContaining for user not found");
+        return edList;
     }
 
     @Override
     public Optional<ED807> getByTitle(Long userId, String title, Boolean showDeleted) {
-        return ed807Repository.findByTitle(userId, title,showDeleted);
+       Optional<ED807> opEd = ed807Repository.findByTitle(userId, title,showDeleted);
+        if(opEd.isEmpty()) throw new ResourceNotFoundException("ed by title for user not found");
+        return opEd;
     }
 
     @Override
     public Page<ED807> getBetweenDates(Long userId, LocalDate startDate, LocalDate endDate, Boolean showDeleted, Pageable pageable) {
-        return ed807Repository.findBetweenDates(userId, startDate, endDate,showDeleted,  pageable);
+        Page<ED807> edList =  ed807Repository.findBetweenDates(userId, startDate, endDate,showDeleted,  pageable);
+        if(edList.isEmpty()) throw new ResourceNotFoundException("ed BetweenDates for user not found");
+        return edList;
     }
 
     @Override
     public Page<ED807> getBetweenCreationDateTime(Long userId, LocalDateTime startDateTime,
                                                   LocalDateTime endDateTime, Boolean showDeleted, Pageable pageable) {
-        return ed807Repository.findBetweenCreationDateTime(userId, startDateTime, endDateTime,showDeleted,  pageable);
+        Page<ED807> edList = ed807Repository.findBetweenCreationDateTime(userId, startDateTime, endDateTime,showDeleted,  pageable);
+        if(edList.isEmpty()) throw new ResourceNotFoundException("ed BetweenCreationDateTime for user not found");
+        return edList;
     }
 
     @Override
     public Page<ED807> getBetweenUploadDate(Long userId, LocalDate startDate, LocalDate endDate, Boolean showDeleted, Pageable pageable) {
-        return ed807Repository.findBetweenUploadDate(userId, startDate, endDate,showDeleted,  pageable);
+        Page<ED807> edList = ed807Repository.findBetweenUploadDate(userId, startDate, endDate,showDeleted,  pageable);
+        if(edList.isEmpty()) throw new ResourceNotFoundException("ed BetweenUploadDate for user not found");
+        return edList;
     }
 }

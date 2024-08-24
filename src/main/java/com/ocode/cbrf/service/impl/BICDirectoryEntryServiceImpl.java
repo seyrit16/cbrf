@@ -1,6 +1,7 @@
 package com.ocode.cbrf.service.impl;
 
 import com.ocode.cbrf.exception.ConflictDataException;
+import com.ocode.cbrf.exception.ResourceNotFoundException;
 import com.ocode.cbrf.invariants.ChangeType;
 import com.ocode.cbrf.model.BICDirectoryEntry;
 import com.ocode.cbrf.repository.BICDirectoryEntryRepository;
@@ -52,7 +53,7 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
         Long id = Long.valueOf(data.get("id"));
         BICDirectoryEntry bicDirectoryEntry = bicDirectoryEntryRepository.findById(id).orElse(null);
         if (bicDirectoryEntry == null)
-            throw new NullPointerException("bicDir is null");
+            throw new ResourceNotFoundException("bicDir is null");
 
         String newBicStr = data.get("bic");
         if (newBicStr != null) {
@@ -75,21 +76,30 @@ public class BICDirectoryEntryServiceImpl implements BICDirectoryEntryService {
 
     @Override
     public Optional<BICDirectoryEntry> getById(Long id) {
-        return bicDirectoryEntryRepository.findById(id);
+        Optional<BICDirectoryEntry> opBic =bicDirectoryEntryRepository.findById(id);
+        if(opBic.isEmpty()) throw new ResourceNotFoundException("bic by id is not found");
+        return opBic;
     }
 
     @Override
     public Optional<BICDirectoryEntry> getByBic(Long edId, Integer bic, Boolean showDeleted) {
-        return bicDirectoryEntryRepository.findByBic(edId, bic, showDeleted);
+        Optional<BICDirectoryEntry> opBic = bicDirectoryEntryRepository.findByBic(edId, bic, showDeleted);
+        if(opBic.isEmpty()) throw new ResourceNotFoundException("bic by bic is not found");
+        return opBic;
     }
 
     @Override
     public Page<BICDirectoryEntry> getByEd807_ID(Long edId, Boolean showDeleted, Pageable pageable) {
-        return bicDirectoryEntryRepository.findByEd807_ID(edId, showDeleted, pageable);
+        Page<BICDirectoryEntry> bicList = bicDirectoryEntryRepository.findByEd807_ID(edId, showDeleted, pageable);
+        if(bicList.isEmpty()) throw new ResourceNotFoundException("bic by ed not found");
+        return bicList;
     }
 
     @Override
     public Page<BICDirectoryEntry> getByParticipantNameAndParticipantType(Long edId, String piName, String piType, Boolean showDeleted, Pageable pageable) {
-        return bicDirectoryEntryRepository.findByEd807_IDAndParticipantInfo_NameAndParticipantInfo_ParticipantType(edId, piName, piType, showDeleted, pageable);
+        Page<BICDirectoryEntry> bicList = bicDirectoryEntryRepository
+                        .findByEd807_IDAndParticipantInfo_NameAndParticipantInfo_ParticipantType(edId, piName, piType, showDeleted, pageable);
+        if(bicList.isEmpty()) throw new ResourceNotFoundException("bic by filter not found");
+        return bicList;
     }
 }

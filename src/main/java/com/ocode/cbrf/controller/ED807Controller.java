@@ -1,7 +1,6 @@
 package com.ocode.cbrf.controller;
 
 import com.ocode.cbrf.config.security.components.CbrfUserDetails;
-import com.ocode.cbrf.dto.ResultDTO;
 import com.ocode.cbrf.dto.impl.ED807Dto;
 import com.ocode.cbrf.service.mapper.impl.ED807MapperImpl;
 import com.ocode.cbrf.model.ED807;
@@ -47,7 +46,7 @@ public class ED807Controller {
 
     @PutMapping("/update")
     @Operation(summary = "Update ED807 by user id")
-    public ResultDTO<?> update(
+    public void update(
             @Parameter(description = "JWT token")
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
 
@@ -72,72 +71,45 @@ public class ED807Controller {
                                             "directoryVersion": "string"
                                             }
                                             """)))
-            @RequestBody Map<String,String> data){
-        try{
+            @RequestBody Map<String, String> data) {
             String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
-            User user= userService.getUser(username).get();
+            User user = userService.getUser(username).get();
 
             ed807Service.update(user.getId(), data);
-            return ResultDTO.EMPTY_OK_RESULT;
-        }catch (NullPointerException nullE){
-            nullE.printStackTrace();
-            return ResultDTO.NOT_FOUND_RESULT;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
     }
 
     @DeleteMapping("/delete")
     @Operation(summary = "Delete ED807 by id")
-    public ResultDTO<?> delete(
+    public void delete(
             @Parameter(description = "ED807 id to delete")
-            @RequestParam("edId") Long edId){
-        try{
-            ed807Service.delete(edId);
-            return ResultDTO.EMPTY_OK_RESULT;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
+            @RequestParam("edId") Long edId) {
+        ed807Service.delete(edId);
     }
 
     @GetMapping("/search/byUser")
     @Operation(summary = "Get all ED807 by user id")
-    public ResultDTO<List<ED807Dto>> getByUser_Id(
+    public List<ED807Dto> getByUser_Id(
             @Parameter(description = "JWT token")
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
 
             @Parameter(description = "Pagination")
-            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
-        try {
-            String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
-            User user= userService.getUser(username).get();
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable) {
+        String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
+        User user = userService.getUser(username).get();
 
-            Page<ED807> edPage = ed807Service.getByUser_Id(user.getId(),user.getRole().getRole().equals("ADMIN"), pageable);
-            List<ED807Dto> edDtoList = new ArrayList<>();
-            for(ED807 ed: edPage) {
-                ed.setBicDirectoryEntries(new ArrayList<>());
-                edDtoList.add(ed807Mapper.toDto(ed));
-            }
-
-            if(edDtoList.isEmpty())
-                return ResultDTO.NOT_FOUND_RESULT;
-
-
-            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
-            resultDTO.setData(edDtoList);
-            return resultDTO;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
+        Page<ED807> edPage = ed807Service.getByUser_Id(user.getId(), user.getRole().getRole().equals("ADMIN"), pageable);
+        List<ED807Dto> edDtoList = new ArrayList<>();
+        for (ED807 ed : edPage) {
+            ed.setBicDirectoryEntries(new ArrayList<>());
+            edDtoList.add(ed807Mapper.toDto(ed));
         }
+
+        return edDtoList;
     }
 
     @GetMapping("/search/by_title")
     @Operation(summary = "Get ED807 by title")
-    public ResultDTO<List<ED807Dto>> getByTitleContaining(
+    public List<ED807Dto> getByTitleContaining(
             @Parameter(description = "JWT token")
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
 
@@ -145,67 +117,47 @@ public class ED807Controller {
             @RequestParam("title") String title,
 
             @Parameter(description = "Pagination")
-            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
-        try {
-            String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
-            User user= userService.getUser(username).get();
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable) {
+        String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
+        User user = userService.getUser(username).get();
 
-            Page<ED807> edPage = ed807Service.getByTitleContaining(user.getId(),title,
-                    user.getRole().getRole().equals("ADMIN"), pageable);
-            List<ED807Dto> edDtoList = new ArrayList<>();
-            for(ED807 ed: edPage)
-                edDtoList.add(ed807Mapper.toDto(ed));
+        Page<ED807> edPage = ed807Service.getByTitleContaining(user.getId(), title,
+                user.getRole().getRole().equals("ADMIN"), pageable);
+        List<ED807Dto> edDtoList = new ArrayList<>();
+        for (ED807 ed : edPage)
+            edDtoList.add(ed807Mapper.toDto(ed));
 
-            if(edDtoList.isEmpty())
-                return ResultDTO.NOT_FOUND_RESULT;
-
-            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
-            resultDTO.setData(edDtoList);
-            return resultDTO;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
+        return edDtoList;
     }
 
     @GetMapping("/search/between_date")
     @Operation(summary = "Get all ED807 between dates")
-    public ResultDTO<List<ED807Dto>> getBetweenDates(
+    public List<ED807Dto> getBetweenDates(
             @Parameter(description = "JWT token")
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
 
             @Parameter(description = "Start date to search")
-            @RequestParam("startDate")LocalDate startDate,
+            @RequestParam("startDate") LocalDate startDate,
 
             @Parameter(description = "End date to search")
             @RequestParam("endDate") LocalDate endDate,
 
             @Parameter(description = "Pagination")
-            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
-        try {
-            String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
-            User user= userService.getUser(username).get();
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable) {
+        String username = jwtService.extractUserName(authorizationHeader.split(" ")[1]);
+        User user = userService.getUser(username).get();
 
-            Page<ED807> edPage = ed807Service.getBetweenDates(user.getId(), startDate, endDate,user.getRole().getRole().equals("ADMIN"), pageable);
-            List<ED807Dto> edDtoList = new ArrayList<>();
-            for(ED807 ed: edPage)
-                edDtoList.add(ed807Mapper.toDto(ed));
+        Page<ED807> edPage = ed807Service.getBetweenDates(user.getId(), startDate, endDate, user.getRole().getRole().equals("ADMIN"), pageable);
+        List<ED807Dto> edDtoList = new ArrayList<>();
+        for (ED807 ed : edPage)
+            edDtoList.add(ed807Mapper.toDto(ed));
 
-            if(edDtoList.isEmpty())
-                return ResultDTO.NOT_FOUND_RESULT;
-
-            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
-            resultDTO.setData(edDtoList);
-            return resultDTO;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
+        return edDtoList;
     }
 
     @GetMapping("/search/between_creationDateTime")
     @Operation(summary = "Get all ED807 between creation dates")
-    public ResultDTO<List<ED807Dto>> getBetweenDates(
+    public List<ED807Dto> getBetweenDates(
             @Parameter(description = "Start date to search")
             @RequestParam("startDateTime") LocalDateTime startDateTime,
 
@@ -213,58 +165,38 @@ public class ED807Controller {
             @RequestParam("endDateTime") LocalDateTime endDateTime,
 
             @Parameter(description = "Pagination")
-            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
-        try {
-            CbrfUserDetails userDetails = (CbrfUserDetails)
-                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable) {
+        CbrfUserDetails userDetails = (CbrfUserDetails)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Page<ED807> edPage = ed807Service.getBetweenCreationDateTime(userDetails.getId(), startDateTime,
-                    endDateTime, userDetails.isAdmin(), pageable);
-            List<ED807Dto> edDtoList = new ArrayList<>();
-            for(ED807 ed: edPage)
-                edDtoList.add(ed807Mapper.toDto(ed));
+        Page<ED807> edPage = ed807Service.getBetweenCreationDateTime(userDetails.getId(), startDateTime,
+                endDateTime, userDetails.isAdmin(), pageable);
+        List<ED807Dto> edDtoList = new ArrayList<>();
+        for (ED807 ed : edPage)
+            edDtoList.add(ed807Mapper.toDto(ed));
 
-            if(edDtoList.isEmpty())
-                return ResultDTO.NOT_FOUND_RESULT;
-
-            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
-            resultDTO.setData(edDtoList);
-            return resultDTO;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
+        return edDtoList;
     }
 
     @GetMapping("/search/between_upload_date")
     @Operation(summary = "Get all ED807 between upload dates")
-    public ResultDTO<List<ED807Dto>> getBetweenUploadDate(
+    public List<ED807Dto> getBetweenUploadDate(
             @Parameter(description = "Start date to search")
-            @RequestParam("startDate")LocalDate startDate,
+            @RequestParam("startDate") LocalDate startDate,
 
             @Parameter(description = "End date to search")
             @RequestParam("endDate") LocalDate endDate,
 
             @Parameter(description = "Pagination")
-            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable){
-        try {
-            CbrfUserDetails userDetails = (CbrfUserDetails)
-                    SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            @PageableDefault(size = 20, sort = {"id"}) Pageable pageable) {
+        CbrfUserDetails userDetails = (CbrfUserDetails)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            Page<ED807> edPage = ed807Service.getBetweenUploadDate(userDetails.getId(), startDate, endDate, userDetails.isAdmin(), pageable);
-            List<ED807Dto> edDtoList = new ArrayList<>();
-            for(ED807 ed: edPage)
-                edDtoList.add(ed807Mapper.toDto(ed));
+        Page<ED807> edPage = ed807Service.getBetweenUploadDate(userDetails.getId(), startDate, endDate, userDetails.isAdmin(), pageable);
+        List<ED807Dto> edDtoList = new ArrayList<>();
+        for (ED807 ed : edPage)
+            edDtoList.add(ed807Mapper.toDto(ed));
 
-            if(edDtoList.isEmpty())
-                return ResultDTO.NOT_FOUND_RESULT;
-
-            ResultDTO<List<ED807Dto>> resultDTO = ResultDTO.EMPTY_OK_RESULT;
-            resultDTO.setData(edDtoList);
-            return resultDTO;
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResultDTO.INTERNAL_SERVER_RESULT;
-        }
+        return edDtoList;
     }
 }
